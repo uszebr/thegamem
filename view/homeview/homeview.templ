@@ -1,7 +1,17 @@
 package homeview
 
+import(
+	"github.com/uszebr/thegamem/view/component/baseview"
+)
+
+const (
+    title= "Game Theory Home Page"
+)
 templ Show(){
-    <h1> Home Page Header </h1>
+    @baseview.BaseWithNav(title){
+        <h1 class="text-center">Welcome to the Game Theory Simulation</h1>
+    }
 }
+    
    
 
