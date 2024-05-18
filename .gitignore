@@ -1,0 +1,9 @@
+.env
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+*.so
+# Executables
+*.exe
+# Editor-specific
+.vscode/
