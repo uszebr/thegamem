@@ -43,8 +43,8 @@ func (rounder Rounder) GetPlayer() *player.Player {
 	return rounder.player
 }
 
-func (rounder Rounder) GetUUID() uuid.UUID {
-	return rounder.roundUUID
+func (rounder Rounder) GetUUID() string {
+	return rounder.roundUUID.String()
 }
 
 func (rounder Rounder) GetLocation() string {
