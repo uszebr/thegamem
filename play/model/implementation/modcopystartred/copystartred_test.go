@@ -1,6 +1,7 @@
 package modcopystartred
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/uszebr/thegamem/play/signal"
@@ -41,13 +42,16 @@ func TestModelCopyStartGreen(t *testing.T) {
 		//{myHistory: []signal.Signal{}, opHistory: []signal.Signal{}, result: signal.Green},
 	}
 
-	for index, test := range tests {
-		model := ModCopyStrartRed{}.GetModel()
-		actualResult := model.CalculateSignal(test.myHistory, test.opHistory, aproximateInteractions)
+	for index, testl := range tests {
+		test := testl
+		t.Run(fmt.Sprintf("Test: %v", index), func(t *testing.T) {
+			model := ModCopyStrartRed{}.GetModel()
+			actualResult := model.CalculateSignal(test.myHistory, test.opHistory, aproximateInteractions)
 
-		if actualResult != test.result {
-			t.Errorf("i: %d actual result: %v not as expected: %v; ", index, actualResult, test.result)
-		}
+			if actualResult != test.result {
+				t.Errorf("i: %d actual result: %v not as expected: %v; ", index, actualResult, test.result)
+			}
+		})
 	}
 
 }

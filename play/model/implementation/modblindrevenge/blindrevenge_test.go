@@ -1,6 +1,7 @@
 package modblindrevenge
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/uszebr/thegamem/play/signal"
@@ -82,11 +83,14 @@ func TestModelBlindRevenge(t *testing.T) {
 		// 	result:    signal.Red},
 	}
 
-	for index, test := range tests {
-		model := ModBlindRevenge{}.GetModel()
-		actualResult := model.CalculateSignal(test.myHistory, test.opHistory, aproximateInteractions)
-		if actualResult != test.result {
-			t.Errorf("i: %d actual result: %v not as expected: %v; ", index, actualResult, test.result)
-		}
+	for index, testl := range tests {
+		test := testl
+		t.Run(fmt.Sprintf("Test: %v", index), func(t *testing.T) {
+			model := ModBlindRevenge{}.GetModel()
+			actualResult := model.CalculateSignal(test.myHistory, test.opHistory, aproximateInteractions)
+			if actualResult != test.result {
+				t.Errorf("i: %d actual result: %v not as expected: %v; ", index, actualResult, test.result)
+			}
+		})
 	}
 }
