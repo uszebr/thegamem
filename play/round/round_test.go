@@ -54,3 +54,31 @@ func TestRoundRounders(t *testing.T) {
 	assert.Equal(t, round.Left.RoundScoreSum, sumActualLeft, "Round score sum left")
 	assert.Equal(t, round.Right.RoundScoreSum, sumActualRight, "Round score sum right")
 }
+
+func TestGetApproximateInteractionsQuantityPositive(t *testing.T) {
+	attempts := 20
+	tests := []struct {
+		interactionQuantity int
+		percentRandom       int
+		resultMin           int
+		resultMax           int
+	}{
+		{interactionQuantity: 100, percentRandom: 10, resultMin: 90, resultMax: 110},
+		{interactionQuantity: 100, percentRandom: 3, resultMin: 97, resultMax: 103},
+		{interactionQuantity: 10, percentRandom: 10, resultMin: 9, resultMax: 19},
+		{interactionQuantity: 10, percentRandom: 0, resultMin: 10, resultMax: 10},
+		{interactionQuantity: 1000, percentRandom: 0, resultMin: 1000, resultMax: 1000},
+
+		//to fail	{interactionQuantity: 100, percentRandom: 10, resultMin: 110, resultMax: 110},
+	}
+
+	for index, test := range tests {
+		for i := range attempts {
+			t.Run(fmt.Sprintf("Test: %v attempt: %v", index, i), func(t *testing.T) {
+				actualResult := getApproximateInteractionsQuantity(test.interactionQuantity, test.percentRandom)
+				assert.True(t, actualResult <= test.resultMax && actualResult >= test.resultMin)
+			})
+		}
+	}
+
+}
