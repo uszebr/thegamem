@@ -15,17 +15,17 @@ const (
 	Red   Signal = "confrontation"
 )
 
-func (s Signal) CalcScore(oponentSignal Signal) int {
-	if s == Green && oponentSignal == Green {
+func (s Signal) CalcScore(opponentSignal Signal) int {
+	if s == Green && opponentSignal == Green {
 		return green_green
 	}
-	if s == Red && oponentSignal == Red {
+	if s == Red && opponentSignal == Red {
 		return red_red
 	}
-	if s == Red && oponentSignal == Green {
+	if s == Red && opponentSignal == Green {
 		return red_green
 	}
-	if s == Green && oponentSignal == Red {
+	if s == Green && opponentSignal == Red {
 		return green_red
 	}
 	panic("Unknown signal combination on CalcScore")

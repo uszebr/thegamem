@@ -9,14 +9,14 @@ type Model struct {
 	action      Action
 }
 
-type Action func(myHistory []signal.Signal, oponentHistory []signal.Signal, aproximateInteractions int) signal.Signal
+type Action func(myHistory []signal.Signal, opponentHistory []signal.Signal, aproximateInteractions int) signal.Signal
 
 func New(name string, description string, iconPath string, action Action) Model {
 	return Model{name: name, description: description, iconPath: iconPath, action: action}
 }
 
-func (model Model) CalculateSignal(myHistory []signal.Signal, oponentHistory []signal.Signal, aproximateInteractions int) signal.Signal {
-	return model.action(myHistory, oponentHistory, aproximateInteractions)
+func (model Model) CalculateSignal(myHistory []signal.Signal, opponentHistory []signal.Signal, aproximateInteractions int) signal.Signal {
+	return model.action(myHistory, opponentHistory, aproximateInteractions)
 }
 
 func (model Model) GetName() string {

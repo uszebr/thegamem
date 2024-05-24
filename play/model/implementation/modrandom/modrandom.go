@@ -16,7 +16,7 @@ const (
 type ModRandom struct{}
 
 func (modRandom ModRandom) GetModel() model.Model {
-	action := func(myHistory []signal.Signal, oponentHistory []signal.Signal, aproximateInteractions int) signal.Signal {
+	action := func(myHistory []signal.Signal, opponentHistory []signal.Signal, aproximateInteractions int) signal.Signal {
 		var signalR signal.Signal
 		if rand.Intn(2) == 0 {
 			signalR = signal.Green
