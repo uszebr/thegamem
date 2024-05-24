@@ -20,9 +20,9 @@ func New(model ModelI) *Player {
 	}
 }
 
-// Playing one interaction with own and oponent signal
-func (player Player) PlayOne(myHistory []signal.Signal, oponentHistory []signal.Signal, aproximateInteractions int) signal.Signal {
-	return player.modeli.CalculateSignal(myHistory, oponentHistory, aproximateInteractions)
+// Playing one interaction with own and  opponent signal
+func (player Player) PlayOne(myHistory []signal.Signal, opponentHistory []signal.Signal, aproximateInteractions int) signal.Signal {
+	return player.modeli.CalculateSignal(myHistory, opponentHistory, aproximateInteractions)
 }
 
 func (player Player) GetModelName() string {
@@ -30,7 +30,7 @@ func (player Player) GetModelName() string {
 }
 
 type CalculateSignalI interface {
-	CalculateSignal(myHistory []signal.Signal, oponentHistory []signal.Signal, aproximateInteractions int) signal.Signal
+	CalculateSignal(myHistory []signal.Signal, opponentHistory []signal.Signal, aproximateInteractions int) signal.Signal
 }
 
 type NameDescI interface {

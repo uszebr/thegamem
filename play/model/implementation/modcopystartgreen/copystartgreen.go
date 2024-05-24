@@ -14,11 +14,11 @@ const (
 type ModCopyStrartGreen struct{}
 
 func (copyStrartGreen ModCopyStrartGreen) GetModel() model.Model {
-	action := func(myHistory []signal.Signal, oponentHistory []signal.Signal, aproximateInteractions int) signal.Signal {
-		if len(oponentHistory) == 0 {
+	action := func(myHistory []signal.Signal, opponentHistory []signal.Signal, aproximateInteractions int) signal.Signal {
+		if len(opponentHistory) == 0 {
 			return signal.Green
 		}
-		return oponentHistory[len(oponentHistory)-1]
+		return opponentHistory[len(opponentHistory)-1]
 	}
 	return model.New(modelName, description, iconPath, action)
 }

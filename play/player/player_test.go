@@ -16,8 +16,8 @@ type MockModel struct {
 	mock.Mock
 }
 
-func (m *MockModel) CalculateSignal(myHistory []signal.Signal, oponentHistory []signal.Signal, aproximateInteractions int) signal.Signal {
-	args := m.Called(myHistory, oponentHistory, aproximateInteractions)
+func (m *MockModel) CalculateSignal(myHistory []signal.Signal, opponentHistory []signal.Signal, aproximateInteractions int) signal.Signal {
+	args := m.Called(myHistory, opponentHistory, aproximateInteractions)
 	return args.Get(0).(signal.Signal)
 }
 
@@ -46,11 +46,11 @@ func TestPlayOneSmoke(t *testing.T) {
 	factory := modelfactory.GetModelFactory()
 	playerInstance := New(factory.MustCreateModel("alwaysgreen"))
 
-	myHistory := []signal.Signal{signal.Green, signal.Green}      // Populate as needed
-	oponentHistory := []signal.Signal{signal.Green, signal.Green} // Populate as needed
+	myHistory := []signal.Signal{signal.Green, signal.Green}       // Populate as needed
+	opponentHistory := []signal.Signal{signal.Green, signal.Green} // Populate as needed
 	aproximateInteractions := 5
 
-	actualSignal := playerInstance.PlayOne(myHistory, oponentHistory, aproximateInteractions)
+	actualSignal := playerInstance.PlayOne(myHistory, opponentHistory, aproximateInteractions)
 	expectedSignal := signal.Green
 	if actualSignal != expectedSignal {
 		t.Errorf("Play one signal: %v not as expected: %v", actualSignal, expectedSignal)
@@ -63,13 +63,13 @@ func TestPlayOneMock(t *testing.T) {
 	playerInstance := New(mockModel)
 
 	myHistory := []signal.Signal{signal.Green, signal.Green}
-	oponentHistory := []signal.Signal{signal.Red, signal.Red}
+	opponentHistory := []signal.Signal{signal.Red, signal.Red}
 	aproximateInteractions := 5
 
 	expectedSignal := signal.Green
-	mockModel.On("CalculateSignal", myHistory, oponentHistory, aproximateInteractions).Return(expectedSignal)
+	mockModel.On("CalculateSignal", myHistory, opponentHistory, aproximateInteractions).Return(expectedSignal)
 
-	result := playerInstance.PlayOne(myHistory, oponentHistory, aproximateInteractions)
+	result := playerInstance.PlayOne(myHistory, opponentHistory, aproximateInteractions)
 
 	assert.Equal(t, expectedSignal, result)
 	mockModel.AssertExpectations(t)
