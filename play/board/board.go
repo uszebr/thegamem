@@ -35,7 +35,7 @@ func New(cols, rows int, initialPlayers []*player.Player, interactions int) (*Bo
 		return &Board{}, fmt.Errorf("Creating board parameters col: %v row: %v quantity of players: %v", cols, rows, len(initialPlayers))
 	}
 
-	var playersToSave [][]*player.Player = [][]*player.Player{}
+	var playersToSave = makeBasePlayers(cols, rows)
 	indexIncoming := 0
 	models := make(map[string]int)
 	for i := 0; i < cols; i++ {
@@ -121,4 +121,13 @@ func (board *Board) createRounds() {
 		round := round.New(board.GetPlayerByPosition(pair.Left), board.GetPlayerByPosition(pair.Right), board.interactions)
 		board.rounds = append(board.rounds, &round)
 	}
+}
+
+// returns two dimensional slice for players
+func makeBasePlayers(cols, rows int) [][]*player.Player {
+	players := make([][]*player.Player, cols)
+	for i := range players {
+		players[i] = make([]*player.Player, rows)
+	}
+	return players
 }

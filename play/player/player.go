@@ -33,12 +33,13 @@ type CalculateSignalI interface {
 	CalculateSignal(myHistory []signal.Signal, opponentHistory []signal.Signal, aproximateInteractions int) signal.Signal
 }
 
-type NameDescI interface {
+type NameInfoI interface {
 	GetName() string
 	GetDescription() string
+	GetIcon() string
 }
 
 type ModelI interface {
 	CalculateSignalI
-	NameDescI
+	NameInfoI
 }
