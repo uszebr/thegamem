@@ -5,35 +5,16 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 
+	"github.com/uszebr/thegamem/play/mocktest"
 	"github.com/uszebr/thegamem/play/model/modelfactory"
 	"github.com/uszebr/thegamem/play/signal"
 )
 
-// Mock for ModelI interface
-type MockModel struct {
-	mock.Mock
-}
-
-func (m *MockModel) CalculateSignal(myHistory []signal.Signal, opponentHistory []signal.Signal, aproximateInteractions int) signal.Signal {
-	args := m.Called(myHistory, opponentHistory, aproximateInteractions)
-	return args.Get(0).(signal.Signal)
-}
-
-func (m *MockModel) GetName() string {
-	args := m.Called()
-	return args.String(0)
-}
-
-func (m *MockModel) GetDescription() string {
-	args := m.Called()
-	return args.String(0)
-}
-
 // Test New function
 func TestNew(t *testing.T) {
-	mockModel := new(MockModel)
+
+	mockModel := new(mocktest.MockModel)
 	playerInstance := New(mockModel)
 	assert.NotNil(t, playerInstance, "player nil")
 	assert.NotEmpty(t, playerInstance.name, "player name empty")
@@ -59,7 +40,7 @@ func TestPlayOneSmoke(t *testing.T) {
 
 // Test PlayOne method with mock model
 func TestPlayOneMock(t *testing.T) {
-	mockModel := new(MockModel)
+	mockModel := new(mocktest.MockModel)
 	playerInstance := New(mockModel)
 
 	myHistory := []signal.Signal{signal.Green, signal.Green}
@@ -76,7 +57,7 @@ func TestPlayOneMock(t *testing.T) {
 }
 
 func TestGetNameMock(t *testing.T) {
-	mockModel := new(MockModel)
+	mockModel := new(mocktest.MockModel)
 	playerInstance := New(mockModel)
 
 	expectedModelName := "expectedmodel"
