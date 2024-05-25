@@ -9,6 +9,36 @@ import (
 	"github.com/uszebr/thegamem/play/player"
 )
 
+var (
+	green             = "alwaysgreen"
+	red               = "alwaysred"
+	factory           = modelfactory.GetModelFactory()
+	playerInstance0   = player.New(factory.MustCreateModel(green))
+	playerInstance1   = player.New(factory.MustCreateModel(green))
+	playerInstance2   = player.New(factory.MustCreateModel(green))
+	playerInstance3   = player.New(factory.MustCreateModel(green))
+	playerInstance4   = player.New(factory.MustCreateModel(green))
+	playerInstance5   = player.New(factory.MustCreateModel(green))
+	playerInstance6   = player.New(factory.MustCreateModel(green))
+	playerInstance7   = player.New(factory.MustCreateModel(green))
+	playerInstance8   = player.New(factory.MustCreateModel(green))
+	playerInstance9   = player.New(factory.MustCreateModel(green))
+	playerInstance10  = player.New(factory.MustCreateModel(green))
+	playerInstance11  = player.New(factory.MustCreateModel(green))
+	playerInstancer0  = player.New(factory.MustCreateModel(red))
+	playerInstancer1  = player.New(factory.MustCreateModel(red))
+	playerInstancer2  = player.New(factory.MustCreateModel(red))
+	playerInstancer3  = player.New(factory.MustCreateModel(red))
+	playerInstancer4  = player.New(factory.MustCreateModel(red))
+	playerInstancer5  = player.New(factory.MustCreateModel(red))
+	playerInstancer6  = player.New(factory.MustCreateModel(red))
+	playerInstancer7  = player.New(factory.MustCreateModel(red))
+	playerInstancer8  = player.New(factory.MustCreateModel(red))
+	playerInstancer9  = player.New(factory.MustCreateModel(red))
+	playerInstancer10 = player.New(factory.MustCreateModel(red))
+	playerInstancer11 = player.New(factory.MustCreateModel(red))
+)
+
 func TestNewNegative(t *testing.T) {
 	tests := []struct {
 		name         string
@@ -31,7 +61,7 @@ func TestNewNegative(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			board, err := New(test.cols, test.rows, test.players, test.interactions, pair.PairsNeighbour{})
+			board, err := New(test.cols, test.rows, test.players, test.interactions, pair.PairsNeighbour{}, 0)
 			assert.Error(t, err)
 			assert.ErrorContains(t, err, test.errorText)
 			assert.Empty(t, board)
@@ -40,33 +70,6 @@ func TestNewNegative(t *testing.T) {
 }
 
 func TestNewSmoke(t *testing.T) {
-	green := "alwaysgreen"
-	red := "alwaysred"
-	factory := modelfactory.GetModelFactory()
-	playerInstance0 := player.New(factory.MustCreateModel(green))
-	playerInstance1 := player.New(factory.MustCreateModel(green))
-	playerInstance2 := player.New(factory.MustCreateModel(green))
-	playerInstance3 := player.New(factory.MustCreateModel(green))
-	playerInstance4 := player.New(factory.MustCreateModel(green))
-	playerInstance5 := player.New(factory.MustCreateModel(green))
-	playerInstance6 := player.New(factory.MustCreateModel(green))
-	playerInstance7 := player.New(factory.MustCreateModel(green))
-	playerInstance8 := player.New(factory.MustCreateModel(green))
-	playerInstance9 := player.New(factory.MustCreateModel(green))
-	playerInstance10 := player.New(factory.MustCreateModel(green))
-	playerInstance11 := player.New(factory.MustCreateModel(green))
-	playerInstancer0 := player.New(factory.MustCreateModel(red))
-	playerInstancer1 := player.New(factory.MustCreateModel(red))
-	playerInstancer2 := player.New(factory.MustCreateModel(red))
-	playerInstancer3 := player.New(factory.MustCreateModel(red))
-	playerInstancer4 := player.New(factory.MustCreateModel(red))
-	playerInstancer5 := player.New(factory.MustCreateModel(red))
-	playerInstancer6 := player.New(factory.MustCreateModel(red))
-	playerInstancer7 := player.New(factory.MustCreateModel(red))
-	playerInstancer8 := player.New(factory.MustCreateModel(red))
-	playerInstancer9 := player.New(factory.MustCreateModel(red))
-	playerInstancer10 := player.New(factory.MustCreateModel(red))
-	playerInstancer11 := player.New(factory.MustCreateModel(red))
 
 	tests := []struct {
 		name          string
@@ -91,7 +94,7 @@ func TestNewSmoke(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			board, err := New(test.cols, test.rows, test.players, test.interactions, pair.PairsNeighbour{})
+			board, err := New(test.cols, test.rows, test.players, test.interactions, pair.PairsNeighbour{}, 0)
 
 			assert.Nil(t, err)
 			assert.Len(t, board.GetPlayersOneSlice(), test.cols*test.rows)
@@ -116,33 +119,6 @@ func TestNewSmoke(t *testing.T) {
 }
 
 func TestBoardScores(t *testing.T) {
-	green := "alwaysgreen"
-	red := "alwaysred"
-	factory := modelfactory.GetModelFactory()
-	playerInstance0 := player.New(factory.MustCreateModel(green))
-	playerInstance1 := player.New(factory.MustCreateModel(green))
-	playerInstance2 := player.New(factory.MustCreateModel(green))
-	playerInstance3 := player.New(factory.MustCreateModel(green))
-	playerInstance4 := player.New(factory.MustCreateModel(green))
-	playerInstance5 := player.New(factory.MustCreateModel(green))
-	playerInstance6 := player.New(factory.MustCreateModel(green))
-	playerInstance7 := player.New(factory.MustCreateModel(green))
-	playerInstance8 := player.New(factory.MustCreateModel(green))
-	playerInstance9 := player.New(factory.MustCreateModel(green))
-	playerInstance10 := player.New(factory.MustCreateModel(green))
-	playerInstance11 := player.New(factory.MustCreateModel(green))
-	playerInstancer0 := player.New(factory.MustCreateModel(red))
-	playerInstancer1 := player.New(factory.MustCreateModel(red))
-	playerInstancer2 := player.New(factory.MustCreateModel(red))
-	playerInstancer3 := player.New(factory.MustCreateModel(red))
-	playerInstancer4 := player.New(factory.MustCreateModel(red))
-	playerInstancer5 := player.New(factory.MustCreateModel(red))
-	playerInstancer6 := player.New(factory.MustCreateModel(red))
-	playerInstancer7 := player.New(factory.MustCreateModel(red))
-	playerInstancer8 := player.New(factory.MustCreateModel(red))
-	playerInstancer9 := player.New(factory.MustCreateModel(red))
-	playerInstancer10 := player.New(factory.MustCreateModel(red))
-	playerInstancer11 := player.New(factory.MustCreateModel(red))
 
 	tests := []struct {
 		name          string
@@ -169,7 +145,7 @@ func TestBoardScores(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			board, _ := New(test.cols, test.rows, test.players, test.interactions, pair.PairsNeighbour{})
+			board, _ := New(test.cols, test.rows, test.players, test.interactions, pair.PairsNeighbour{}, 0)
 			boardScore := board.GetBoardPlayerScores()
 			playersFromScore := make([]*player.Player, 0, test.cols*test.rows)
 			//checking each player score
@@ -185,18 +161,6 @@ func TestBoardScores(t *testing.T) {
 
 // transforming map of scores to the list of ratings(sorted desc)
 func TestRatings(t *testing.T) {
-	green := "alwaysgreen"
-	red := "alwaysred"
-	factory := modelfactory.GetModelFactory()
-	playerInstance0 := player.New(factory.MustCreateModel(green))
-	playerInstance1 := player.New(factory.MustCreateModel(green))
-	playerInstance2 := player.New(factory.MustCreateModel(green))
-	playerInstance3 := player.New(factory.MustCreateModel(green))
-
-	playerInstancer0 := player.New(factory.MustCreateModel(red))
-	playerInstancer1 := player.New(factory.MustCreateModel(red))
-	playerInstancer2 := player.New(factory.MustCreateModel(red))
-	playerInstancer3 := player.New(factory.MustCreateModel(red))
 
 	tests := []struct {
 		name         string
@@ -213,16 +177,52 @@ func TestRatings(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			board, _ := New(test.cols, test.rows, test.players, test.interactions, pair.PairsNeighbour{})
+			board, _ := New(test.cols, test.rows, test.players, test.interactions, pair.PairsNeighbour{}, 0)
 			ratings := board.GetRatings()
 			scores := board.GetBoardPlayerScores()
 			assert.Len(t, ratings, len(test.players))
 			for index, rating := range ratings {
-				assert.Contains(t, test.players, rating.player)
-				assert.Equal(t, rating.score, scores[rating.player])
-				assert.Equal(t, test.scores[index], rating.score)
+				assert.Contains(t, test.players, rating.Player)
+				assert.Equal(t, rating.Score, scores[rating.Player])
+				assert.Equal(t, test.scores[index], rating.Score)
 			}
 		})
 	}
+}
 
+func TestWinnersLoosers(t *testing.T) {
+
+	tests := []struct {
+		name         string
+		cols         int
+		rows         int
+		interactions int
+		players      []*player.Player
+		scores       []int
+		rotation     int
+		winModeL     string
+		loosModel    string
+		winScore     int
+		loosScore    int
+	}{
+
+		{name: "WinnersLoosers 4 players mix", winScore: 5, loosScore: 1, winModeL: red, loosModel: green, cols: 2, rows: 2, players: []*player.Player{playerInstance0, playerInstance1, playerInstancer0, playerInstancer1}, interactions: 1, rotation: 1},
+		{name: "WinnersLoosers 6 players mix", winScore: 8, loosScore: 4, winModeL: red, loosModel: green, cols: 3, rows: 2, players: []*player.Player{playerInstance0, playerInstance1, playerInstance2, playerInstancer0, playerInstancer1, playerInstancer2}, interactions: 1, rotation: 1},
+		{name: "WinnersLoosers 4 players green", winScore: 15, loosScore: 15, winModeL: green, loosModel: green, cols: 2, rows: 2, players: []*player.Player{playerInstance0, playerInstance1, playerInstance2, playerInstance3}, interactions: 1, rotation: 2},
+		{name: "WinnersLoosers 4 players red", winScore: 3, loosScore: 3, winModeL: red, loosModel: red, cols: 2, rows: 2, players: []*player.Player{playerInstancer0, playerInstancer1, playerInstancer2, playerInstancer3}, interactions: 1, rotation: 2},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			board, _ := New(test.cols, test.rows, test.players, test.interactions, pair.PairsNeighbour{}, test.rotation)
+			winners := board.GetWinners()
+			loosers := board.GetLoosers()
+			assert.Len(t, winners, test.rotation)
+			assert.Len(t, loosers, test.rotation)
+			assert.Equal(t, test.winModeL, winners[0].Player.GetModelName())
+			assert.Equal(t, test.loosModel, loosers[0].Player.GetModelName())
+
+			assert.Equal(t, test.winScore, winners[0].Score)
+			assert.Equal(t, test.loosScore, loosers[0].Score)
+		})
+	}
 }

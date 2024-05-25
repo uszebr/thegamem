@@ -18,6 +18,17 @@ func ShufflePlayers(players []*player.Player) []*player.Player {
 	return copiedSlice
 }
 
+// converting "Board" coordinate dependent slice to the flat
+func ConvertPlayerFlatList(players [][]*player.Player) []*player.Player {
+	copiedSlice := make([]*player.Player, 0)
+	for _, levelOne := range players {
+		for _, player := range levelOne {
+			copiedSlice = append(copiedSlice, player)
+		}
+	}
+	return copiedSlice
+}
+
 // creating slice of players for each model in the map quantity of players
 func GenerateByModelAndQuantity(models map[string]int) ([]*player.Player, error) {
 	if len(models) == 0 {
