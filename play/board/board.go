@@ -9,6 +9,10 @@ import (
 	"github.com/uszebr/thegamem/play/round"
 )
 
+type PairsCreatorI interface {
+	CreatePairs(boardCols, boardRows int) ([]coordinate.PositionPair, error)
+}
+
 type Board struct {
 	cols         int // quantity of cols - X
 	rows         int // quantity of rows - Y
@@ -21,10 +25,13 @@ type Board struct {
 	// model names/quantity
 	models map[string]int
 	uuid   uuid.UUID
+
+	// how pairs of players are created for the rounds
+	// pairsCreator PairsCreatorI
 }
 
 // if players need to be shuffled - do it before
-func New(cols, rows int, initialPlayers []*player.Player, interactions int) (*Board, error) {
+func New(cols, rows int, initialPlayers []*player.Player, interactions int, pairsCreator PairsCreatorI) (*Board, error) {
 	if interactions <= 0 {
 		return &Board{}, fmt.Errorf("Creating board issue interactions: %v ", interactions)
 	}
@@ -53,7 +60,8 @@ func New(cols, rows int, initialPlayers []*player.Player, interactions int) (*Bo
 			indexIncoming++
 		}
 	}
-	pairs, err := coordinate.CreatePairs(cols, rows)
+	// Creating Pairs with neighbors(might be extracted to constructor as interface if neede more pairs option(like all with all))
+	pairs, err := pairsCreator.CreatePairs(cols, rows)
 	if err != nil {
 		return &Board{}, fmt.Errorf("Creating Pairs issue: %w", err)
 	}
@@ -65,7 +73,8 @@ func New(cols, rows int, initialPlayers []*player.Player, interactions int) (*Bo
 		interactions: interactions,
 		pairs:        pairs,
 	}
-	board.createRounds() //might be insert error/check from rounds here??
+	board.createRounds() //might be insert error/check from rounds if needed??
+
 	return board, nil
 }
 

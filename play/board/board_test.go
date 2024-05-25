@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/uszebr/thegamem/play/board/pair"
 	"github.com/uszebr/thegamem/play/model/modelfactory"
 	"github.com/uszebr/thegamem/play/player"
 )
@@ -31,7 +32,7 @@ func TestNewNegative(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			board, err := New(test.cols, test.rows, test.players, test.interactions)
+			board, err := New(test.cols, test.rows, test.players, test.interactions, pair.PairsNeighbour{})
 			assert.Error(t, err)
 			assert.ErrorContains(t, err, test.errorText)
 			assert.Empty(t, board)
@@ -91,7 +92,7 @@ func TestNewSmoke(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			board, err := New(test.cols, test.rows, test.players, test.interactions)
+			board, err := New(test.cols, test.rows, test.players, test.interactions, pair.PairsNeighbour{})
 
 			assert.Nil(t, err)
 			assert.Len(t, board.GetPlayersOneSlice(), test.cols*test.rows)

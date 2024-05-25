@@ -16,7 +16,7 @@ type PositionPair struct {
 	Right Position
 }
 
-func (position Position) getPositinsAround(boardCols, boardRows int) ([]Position, error) {
+func (position Position) GetPositinsAround(boardCols, boardRows int) ([]Position, error) {
 	if position.Y >= boardRows || position.Y < 0 {
 		return []Position{}, fmt.Errorf("players arround issue: y position is wrong: %v", position.Y)
 	}
@@ -75,24 +75,25 @@ func coordinateTransform(coordinate int, boardSize int, direction bool) int {
 	return result
 }
 
+// todo delete!! moved to pair package
 // creating pairs of Positions for Rounds
-func CreatePairs(boardCols, boardRows int) ([]PositionPair, error) {
-	result := make([]PositionPair, 0)
-	calculatedPositions := make([]Position, 0, boardCols*boardRows)
-	for x := range boardCols {
-		for y := range boardRows {
-			position := Position{x, y}
-			calculatedPositions = append(calculatedPositions, position)
-			partners, err := position.getPositinsAround(boardCols, boardRows)
-			if err != nil {
-				return []PositionPair{}, err
-			}
-			for _, partner := range partners {
-				if !partner.In(calculatedPositions) {
-					result = append(result, PositionPair{Left: position, Right: partner})
-				}
-			}
-		}
-	}
-	return result, nil
-}
+// func CreatePairs(boardCols, boardRows int) ([]PositionPair, error) {
+// 	result := make([]PositionPair, 0)
+// 	calculatedPositions := make([]Position, 0, boardCols*boardRows)
+// 	for x := range boardCols {
+// 		for y := range boardRows {
+// 			position := Position{x, y}
+// 			calculatedPositions = append(calculatedPositions, position)
+// 			partners, err := position.getPositinsAround(boardCols, boardRows)
+// 			if err != nil {
+// 				return []PositionPair{}, err
+// 			}
+// 			for _, partner := range partners {
+// 				if !partner.In(calculatedPositions) {
+// 					result = append(result, PositionPair{Left: position, Right: partner})
+// 				}
+// 			}
+// 		}
+// 	}
+// 	return result, nil
+// }

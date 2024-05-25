@@ -88,7 +88,7 @@ func TestPositionsArround(t *testing.T) {
 	for index, testl := range tests {
 		test := testl // for multithreading safe before 1.22
 		t.Run(fmt.Sprintf("Test: %v", index), func(t *testing.T) {
-			actual, err := test.p.getPositinsAround(test.boardCols, test.boardRows)
+			actual, err := test.p.GetPositinsAround(test.boardCols, test.boardRows)
 			if test.errMes != "" {
 				if err == nil {
 					t.Errorf("i: %d, expecting error %v but not occured ", index, test.errMes)
@@ -113,34 +113,5 @@ func TestPositionsArround(t *testing.T) {
 			}
 		})
 
-	}
-}
-func TestCreatePairs(t *testing.T) {
-	tests := []struct {
-		cols     int
-		rows     int
-		result   int
-		errorMes string
-	}{
-		//if board wide/tall more then 2 rounds = cols*rows * 4
-		{cols: 1, rows: 1, result: 0, errorMes: ""}, // no Rounds
-		{cols: 2, rows: 2, result: 6, errorMes: ""}, // 6 rounds
-		{cols: 6, rows: 4, result: 96, errorMes: ""},
-		{cols: 5, rows: 3, result: 60, errorMes: ""},
-		{cols: 15, rows: 4, result: 240, errorMes: ""},
-	}
-	for index, testl := range tests {
-		test := testl // for multithreading safe before 1.22
-		t.Run(fmt.Sprintf("Test: %v", index), func(t *testing.T) {
-			pairs, err := CreatePairs(test.cols, test.rows)
-			if err != nil {
-				t.Errorf("i: %d Issue creating pairs, err: %v ", index, err)
-				return
-			}
-			if len(pairs) != test.result {
-				t.Errorf("i: %d Issue quantity of pairs: %v not as expected: %v ", index, len(pairs), test.result)
-				return
-			}
-		})
 	}
 }
