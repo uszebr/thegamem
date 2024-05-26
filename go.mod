@@ -17,7 +17,8 @@ require (
 )
 
 require (
-	github.com/a-h/templ v0.2.680
+	github.com/a-h/templ v0.2.707
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/google/uuid v1.6.0
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	github.com/labstack/gommon v0.4.2 // indirect
