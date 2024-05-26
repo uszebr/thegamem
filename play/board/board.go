@@ -2,6 +2,7 @@ package board
 
 import (
 	"fmt"
+	"sort"
 
 	"github.com/google/uuid"
 	"github.com/uszebr/thegamem/play/board/coordinate"
@@ -26,8 +27,16 @@ type Board struct {
 	models map[string]int
 	uuid   uuid.UUID
 
-	// how pairs of players are created for the rounds
-	// pairsCreator PairsCreatorI
+	boardScores   map[*player.Player]int
+	playerRatings []Rating
+}
+
+// this needed to show quickly on the page
+// calculate once show always
+// ?? todo might be substituted for method that calculates on a fly(less memory more processor)
+type Rating struct {
+	player *player.Player
+	score  int
 }
 
 // if players need to be shuffled - do it before
@@ -72,9 +81,12 @@ func New(cols, rows int, initialPlayers []*player.Player, interactions int, pair
 		players:      playersToSave,
 		interactions: interactions,
 		pairs:        pairs,
+		boardScores:  make(map[*player.Player]int, cols*rows),
+		//	playerRatings: make([]Rating, 0, cols*rows),
 	}
-	board.createRounds() //might be insert error/check from rounds if needed??
-
+	board.createRounds()         //might be insert error/check from rounds if needed??
+	board.calculateBoardScores() // calculating scores for players
+	board.calculateRating()      // calculating list of players rating for current board
 	return board, nil
 }
 
@@ -130,6 +142,32 @@ func (board *Board) createRounds() {
 		round := round.New(board.GetPlayerByPosition(pair.Left), board.GetPlayerByPosition(pair.Right), board.interactions)
 		board.rounds = append(board.rounds, &round)
 	}
+}
+
+func (board *Board) calculateBoardScores() {
+	for _, round := range board.rounds {
+		board.boardScores[round.Left.GetPlayer()] += round.Left.RoundScoreSum
+		board.boardScores[round.Right.GetPlayer()] += round.Right.RoundScoreSum
+	}
+}
+
+func (board *Board) GetBoardPlayerScores() map[*player.Player]int {
+	return board.boardScores
+}
+
+func (board *Board) calculateRating() {
+	ratings := make([]Rating, 0, board.cols*board.rows)
+	for player, score := range board.boardScores {
+		ratings = append(ratings, Rating{player: player, score: score})
+	}
+	sort.Slice(ratings, func(i, j int) bool {
+		return ratings[i].score > ratings[j].score
+	})
+	board.playerRatings = ratings
+}
+
+func (board *Board) GetRatings() []Rating {
+	return board.playerRatings
 }
 
 // returns two dimensional slice for players
