@@ -27,6 +27,8 @@ type Board struct {
 	models map[string]int
 	uuid   uuid.UUID
 
+	rotation int
+
 	boardScores   map[*player.Player]int
 	playerRatings []Rating
 }
@@ -35,12 +37,12 @@ type Board struct {
 // calculate once show always
 // ?? todo might be substituted for method that calculates on a fly(less memory more processor)
 type Rating struct {
-	player *player.Player
-	score  int
+	Player *player.Player
+	Score  int
 }
 
 // if players need to be shuffled - do it before
-func New(cols, rows int, initialPlayers []*player.Player, interactions int, pairsCreator PairsCreatorI) (*Board, error) {
+func New(cols, rows int, initialPlayers []*player.Player, interactions int, pairsCreator PairsCreatorI, rotation int) (*Board, error) {
 	if interactions <= 0 {
 		return &Board{}, fmt.Errorf("Creating board issue interactions: %v ", interactions)
 	}
@@ -51,7 +53,7 @@ func New(cols, rows int, initialPlayers []*player.Player, interactions int, pair
 		return &Board{}, fmt.Errorf("Creating board parameters col: %v row: %v quantity of players: %v", cols, rows, len(initialPlayers))
 	}
 
-	var playersToSave = makeBasePlayers(cols, rows)
+	var playersToSave = MakeBasePlayers(cols, rows)
 	indexIncoming := 0
 	models := make(map[string]int)
 	for i := 0; i < cols; i++ {
@@ -83,6 +85,7 @@ func New(cols, rows int, initialPlayers []*player.Player, interactions int, pair
 		pairs:        pairs,
 		boardScores:  make(map[*player.Player]int, cols*rows),
 		//	playerRatings: make([]Rating, 0, cols*rows),
+		rotation: rotation,
 	}
 	board.createRounds()         //might be insert error/check from rounds if needed??
 	board.calculateBoardScores() // calculating scores for players
@@ -158,10 +161,10 @@ func (board *Board) GetBoardPlayerScores() map[*player.Player]int {
 func (board *Board) calculateRating() {
 	ratings := make([]Rating, 0, board.cols*board.rows)
 	for player, score := range board.boardScores {
-		ratings = append(ratings, Rating{player: player, score: score})
+		ratings = append(ratings, Rating{Player: player, Score: score})
 	}
 	sort.Slice(ratings, func(i, j int) bool {
-		return ratings[i].score > ratings[j].score
+		return ratings[i].Score > ratings[j].Score
 	})
 	board.playerRatings = ratings
 }
@@ -171,10 +174,29 @@ func (board *Board) GetRatings() []Rating {
 }
 
 // returns two dimensional slice for players
-func makeBasePlayers(cols, rows int) [][]*player.Player {
+func MakeBasePlayers(cols, rows int) [][]*player.Player {
 	players := make([][]*player.Player, cols)
 	for i := range players {
 		players[i] = make([]*player.Player, rows)
 	}
 	return players
+}
+
+func (board *Board) GetWinners() []Rating {
+	return board.playerRatings[:board.rotation]
+}
+
+func (board *Board) GetLoosers() []Rating {
+	return board.playerRatings[len(board.playerRatings)-board.rotation:]
+}
+
+func (board *Board) GetPositionForPlayer(playerToFind *player.Player) (coordinate.Position, error) {
+	for x, levelOne := range board.players {
+		for y, player := range levelOne {
+			if player == playerToFind {
+				return coordinate.Position{X: x, Y: y}, nil
+			}
+		}
+	}
+	return coordinate.Position{}, fmt.Errorf("Player not found on the board")
 }

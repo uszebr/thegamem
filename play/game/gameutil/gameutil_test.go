@@ -6,7 +6,38 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
+	"github.com/uszebr/thegamem/play/model/modelfactory"
 	"github.com/uszebr/thegamem/play/player"
+)
+
+var (
+	green             = "alwaysgreen"
+	red               = "alwaysred"
+	factory           = modelfactory.GetModelFactory()
+	playerInstance0   = player.New(factory.MustCreateModel(green))
+	playerInstance1   = player.New(factory.MustCreateModel(green))
+	playerInstance2   = player.New(factory.MustCreateModel(green))
+	playerInstance3   = player.New(factory.MustCreateModel(green))
+	playerInstance4   = player.New(factory.MustCreateModel(green))
+	playerInstance5   = player.New(factory.MustCreateModel(green))
+	playerInstance6   = player.New(factory.MustCreateModel(green))
+	playerInstance7   = player.New(factory.MustCreateModel(green))
+	playerInstance8   = player.New(factory.MustCreateModel(green))
+	playerInstance9   = player.New(factory.MustCreateModel(green))
+	playerInstance10  = player.New(factory.MustCreateModel(green))
+	playerInstance11  = player.New(factory.MustCreateModel(green))
+	playerInstancer0  = player.New(factory.MustCreateModel(red))
+	playerInstancer1  = player.New(factory.MustCreateModel(red))
+	playerInstancer2  = player.New(factory.MustCreateModel(red))
+	playerInstancer3  = player.New(factory.MustCreateModel(red))
+	playerInstancer4  = player.New(factory.MustCreateModel(red))
+	playerInstancer5  = player.New(factory.MustCreateModel(red))
+	playerInstancer6  = player.New(factory.MustCreateModel(red))
+	playerInstancer7  = player.New(factory.MustCreateModel(red))
+	playerInstancer8  = player.New(factory.MustCreateModel(red))
+	playerInstancer9  = player.New(factory.MustCreateModel(red))
+	playerInstancer10 = player.New(factory.MustCreateModel(red))
+	playerInstancer11 = player.New(factory.MustCreateModel(red))
 )
 
 func TestShufflePlayers(t *testing.T) {
@@ -78,5 +109,39 @@ func TestGenerateByModelAndQuantity(t *testing.T) {
 			assert.Len(t, players, test.len)
 		})
 	}
+}
 
+func TestConvertPlayerFlatList(t *testing.T) {
+	tests := []struct {
+		name          string
+		playerInput   [][]*player.Player
+		playersOutput []*player.Player
+	}{
+		{name: "Player Convert empy",
+			playerInput:   [][]*player.Player{},
+			playersOutput: []*player.Player{},
+		},
+		{name: "Player Convert 4 player",
+			playerInput: [][]*player.Player{
+				{playerInstance0, playerInstance1},
+				{playerInstance2},
+				{playerInstance3},
+			},
+			playersOutput: []*player.Player{playerInstance0, playerInstance1, playerInstance2, playerInstance3},
+		},
+		{name: "Player Convert 6 player",
+			playerInput: [][]*player.Player{
+				{playerInstance0, playerInstance1},
+				{playerInstance2, playerInstance3, playerInstance4},
+				{playerInstance5, playerInstance6, playerInstance7, playerInstance8},
+				{playerInstance9, playerInstance10, playerInstance11},
+			},
+			playersOutput: []*player.Player{playerInstance0, playerInstance1, playerInstance2, playerInstance3, playerInstance4, playerInstance5, playerInstance6, playerInstance7, playerInstance8, playerInstance9, playerInstance10, playerInstance11},
+		},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			assert.Equal(t, test.playersOutput, ConvertPlayerFlatList(test.playerInput))
+		})
+	}
 }
