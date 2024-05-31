@@ -49,3 +49,11 @@ func (factory ModelFactory) MustCreateModel(modelName string) model.Model {
 	}
 	return m.GetModel()
 }
+
+func (factory ModelFactory) GetAllModelNames() []string {
+	keys := make([]string, 0, len(factory.models))
+	for key := range factory.models {
+		keys = append(keys, key)
+	}
+	return keys
+}

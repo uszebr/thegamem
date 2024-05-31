@@ -1,0 +1,9 @@
+
+.icon-hover {
+  transition: transform 0.2s ease-in-out;
+}
+
+.icon-hover:hover,
+.icon-hover:focus {
+  transform: scale(1.4); /* Increase icon size by 20% on hover/focus */
+}

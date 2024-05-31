@@ -1,0 +1,82 @@
+package loginview
+
+import(
+    "github.com/uszebr/thegamem/view/component/baseview"
+    "github.com/uszebr/thegamem/internal/entity"
+)
+
+
+const (
+    title= "Game Theory Login"
+)
+//todo insert errors/props data
+templ Show(errors []error){
+    @baseview.BaseWithNav(title){
+        <h1 class="text-center">Login to Game Theory Simulation</h1>
+         <div class="container mt-5" id="result-container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">Login </div>
+                <div class="card-body">
+                 
+                @LoginForm(errors)
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    }
+}
+
+templ LoginForm(errors []error){
+if email:=getEmail(ctx); email == "" {
+<form id="loginForm" hx-post="/login" hx-target="#result-container" hx-indicator="#spinner">
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" />
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="password" />
+    </div>
+    @loginErrors(errors)
+    <button type="submit" class="btn btn-primary " hx-disable="true">
+        <span id="spinner" class="spinner-border htmx-indicator spinner-border-sm"></span> Submit
+    </button>
+</form>
+}else{
+<div class="alert alert-primary" role="alert">
+    You are already logged in as {email}
+</div>
+}
+}
+
+templ loginErrors(errors []error){
+if len(errors)>0{
+<div id="loginErrors">
+    for _,onEr:= range errors{
+         <div class="alert alert-danger" role="alert">{onEr.Error()}</div>
+    }
+</div>
+}
+}
+
+templ SuccessLogin(){
+<div class="alert alert-success" role="alert">
+  You are logged in and can <a href="/newgame" class="alert-link">create new Game</a> and experiment
+</div>
+}
+
+templ SuccessLogout(){
+<div class="alert alert-success" role="alert">
+  You are logged out! Can navigate <a href="/" class="alert-link">to the Home Page</a>
+</div>
+}
+
+func getEmail(ctx context.Context) string {
+	if user, ok := ctx.Value("user").(entity.UserAuth); ok {
+		return user.Email
+  }
+	return ""
+}

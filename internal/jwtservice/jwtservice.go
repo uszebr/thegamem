@@ -10,8 +10,10 @@ import (
 	"github.com/uszebr/thegamem/internal/logger/logutil"
 )
 
+type JwtService struct{}
+
 // example of decoding https://jwt.io/
-func GetUserFromJWT(tokenExt string) (entity.UserAuth, error) {
+func (jwtService JwtService) GetUserFromJWT(tokenExt string) (entity.UserAuth, error) {
 	token, _, err := new(jwt.Parser).ParseUnverified(tokenExt, jwt.MapClaims{})
 	if err != nil {
 		slog.Error("Error parsing JWT", logutil.Err(err))

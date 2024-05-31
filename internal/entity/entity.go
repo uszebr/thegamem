@@ -6,3 +6,9 @@ type UserAuth struct {
 	IsAnonymus bool
 	UserId     string
 }
+
+type AuthDetails struct {
+	AccessToken  string
+	ExpiresIn    int
+	RefreshToken string
+}

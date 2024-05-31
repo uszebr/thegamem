@@ -1,0 +1,25 @@
+package cardview
+
+
+templ ShowCardBase(cardHeader string){ 
+<div class="card">
+    if cardHeader!=""{
+    <div class="card-header">{cardHeader}</div>
+    }
+    <div class="card-body">
+        { children...}
+    </div>
+</div>     
+}
+
+templ ShowDangerCart(header string, message string){
+    @ShowCardBase(header){
+        <div class="alert alert-danger" role="alert">{message}</div>
+    }
+}
+
+templ ShowSuccessCart(header string, message string){
+    @ShowCardBase(header){
+        <div class="alert alert-success" role="alert">{message}</div>
+    }
+}
