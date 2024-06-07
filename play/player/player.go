@@ -34,6 +34,9 @@ func (player Player) GetName() string {
 func (player Player) GetIcon() string {
 	return player.modeli.GetIcon()
 }
+func (player Player) GetModelDescription() string {
+	return player.modeli.GetDescription()
+}
 
 type CalculateSignalI interface {
 	CalculateSignal(myHistory []signal.Signal, opponentHistory []signal.Signal, aproximateInteractions int) signal.Signal

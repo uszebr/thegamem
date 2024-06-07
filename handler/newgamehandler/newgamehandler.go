@@ -18,6 +18,7 @@ import (
 	"github.com/uszebr/thegamem/view/component/fullpageview"
 	"github.com/uszebr/thegamem/view/gameview"
 	"github.com/uszebr/thegamem/view/newgameview"
+	"github.com/uszebr/thegamem/view/roundview"
 )
 
 type NewGameHadler struct {
@@ -109,7 +110,7 @@ func (h *NewGameHadler) HandleAddBoardPost(c echo.Context) error {
 	if err != nil {
 		active = -1
 	}
-	return utilhandler.Render(c, gameview.BoardsPanel(game.GetBoards(), active))
+	return utilhandler.Render(c, gameview.BoardsPanel(game.GetBoards(), active, game))
 }
 
 func (h *NewGameHadler) HandleBoard(c echo.Context) error {
@@ -171,5 +172,31 @@ func (h *NewGameHadler) HandleRoundsForPlayerPost(c echo.Context) error {
 	position := coordinate.Position{X: col, Y: row}
 	player := board.GetPlayerByPosition(position)
 	//logger.Debug("TEMP HandleRoundsForPlayer", "col", col, "row", row)
-	return utilhandler.Render(c, boardview.PlayerRounds(board, player))
+	return utilhandler.Render(c, boardview.PlayerRounds(board, player, game))
+}
+
+func (h *NewGameHadler) HandleRound(c echo.Context) error {
+	slog.Debug("Particular Board Get")
+	ctx := c.Request().Context()
+	user, ok := ctx.Value("user").(entity.UserAuth)
+	if !ok {
+		return utilhandler.Render(c, fullpageview.FullPageWithError("Access denied", "Board issue: Access denied", "Need to be logged in to use rounds"))
+	}
+	game, ok := h.usergames.GetGameForUser(user.UserId)
+	if !ok {
+		return utilhandler.Render(c, fullpageview.FullPageWithError("No Game Found", "Round issue: No Game", "No game found. Plz create new game to start."))
+	}
+	boardUrl := c.Param("boardId")
+	roundUrl := c.Param("roundId")
+
+	b, err := game.GetBoardByUUID(boardUrl)
+	if err != nil {
+		return utilhandler.Render(c, fullpageview.FullPageWithError("No Board Found", "Round issue: No Board", "No board found."))
+	}
+
+	r, err := b.GetRoundByUUID(roundUrl)
+	if err != nil {
+		return utilhandler.Render(c, fullpageview.FullPageWithError("No Round Found", "Round issue: No Round", "No round found."))
+	}
+	return utilhandler.Render(c, roundview.Show(r, b, game))
 }

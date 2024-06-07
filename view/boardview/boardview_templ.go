@@ -12,6 +12,7 @@ import "bytes"
 
 import (
 	"fmt"
+	"github.com/uszebr/thegamem/internal/urlservice"
 	"github.com/uszebr/thegamem/play/board"
 	"github.com/uszebr/thegamem/play/game"
 	"github.com/uszebr/thegamem/play/player"
@@ -50,7 +51,7 @@ func Show(particularBoard *board.Board, active int, game *game.Game) templ.Compo
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(active))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 18, Col: 52}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 21, Col: 52}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -63,7 +64,7 @@ func Show(particularBoard *board.Board, active int, game *game.Game) templ.Compo
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(particularBoard.GetUUID())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 18, Col: 80}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 21, Col: 80}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -73,7 +74,7 @@ func Show(particularBoard *board.Board, active int, game *game.Game) templ.Compo
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = gameview.BoardsPanel(game.GetBoards(), active).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = gameview.BoardsPanel(game.GetBoards(), active, game).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -89,7 +90,7 @@ func Show(particularBoard *board.Board, active int, game *game.Game) templ.Compo
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = PlayerRounds(particularBoard, nil).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = PlayerRounds(particularBoard, nil, game).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -143,7 +144,7 @@ func boardTable(board *board.Board) templ.Component {
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(getPlayerTitle(board.GetPlayers()[col][row]))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 48, Col: 70}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 51, Col: 70}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
@@ -156,7 +157,7 @@ func boardTable(board *board.Board) templ.Component {
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(colrowOptions(col, row, board.GetUUID()))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 48, Col: 196}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 51, Col: 196}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
@@ -169,7 +170,7 @@ func boardTable(board *board.Board) templ.Component {
 				var templ_7745c5c3_Var8 string
 				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(board.GetPlayers()[col][row].GetIcon())
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 49, Col: 68}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 52, Col: 68}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
@@ -182,7 +183,7 @@ func boardTable(board *board.Board) templ.Component {
 				var templ_7745c5c3_Var9 string
 				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(getPlayerTitle(board.GetPlayers()[col][row]))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 49, Col: 121}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 52, Col: 121}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 				if templ_7745c5c3_Err != nil {
@@ -209,7 +210,7 @@ func boardTable(board *board.Board) templ.Component {
 	})
 }
 
-func PlayerRounds(board *board.Board, player *player.Player) templ.Component {
+func PlayerRounds(board *board.Board, player *player.Player, game *game.Game) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -234,7 +235,7 @@ func PlayerRounds(board *board.Board, player *player.Player) templ.Component {
 			var templ_7745c5c3_Var11 string
 			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(player.GetName())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 64, Col: 36}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 67, Col: 36}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 			if templ_7745c5c3_Err != nil {
@@ -247,7 +248,7 @@ func PlayerRounds(board *board.Board, player *player.Player) templ.Component {
 			var templ_7745c5c3_Var12 string
 			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(player.GetModelName())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 64, Col: 67}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 67, Col: 67}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {
@@ -260,7 +261,7 @@ func PlayerRounds(board *board.Board, player *player.Player) templ.Component {
 			var templ_7745c5c3_Var13 string
 			templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(colrowOptions(-1, -1, board.GetUUID()))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 65, Col: 178}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 68, Col: 178}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 			if templ_7745c5c3_Err != nil {
@@ -283,7 +284,7 @@ func PlayerRounds(board *board.Board, player *player.Player) templ.Component {
 			var templ_7745c5c3_Var14 string
 			templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(index) + ". " + round.GetUUID())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 79, Col: 65}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 82, Col: 65}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 			if templ_7745c5c3_Err != nil {
@@ -293,7 +294,7 @@ func PlayerRounds(board *board.Board, player *player.Player) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var15 templ.SafeURL = templ.URL("/round/" + round.GetUUID())
+			var templ_7745c5c3_Var15 templ.SafeURL = templ.URL(urlservice.GetRoundUrl(game, board, round))
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var15)))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -305,7 +306,7 @@ func PlayerRounds(board *board.Board, player *player.Player) templ.Component {
 			var templ_7745c5c3_Var16 string
 			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(round.Left.GetPlayer().GetIcon())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 85, Col: 49}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 88, Col: 49}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 			if templ_7745c5c3_Err != nil {
@@ -318,7 +319,7 @@ func PlayerRounds(board *board.Board, player *player.Player) templ.Component {
 			var templ_7745c5c3_Var17 string
 			templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(round.Left.GetPlayer().GetModelName())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 85, Col: 95}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 88, Col: 95}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 			if templ_7745c5c3_Err != nil {
@@ -331,7 +332,7 @@ func PlayerRounds(board *board.Board, player *player.Player) templ.Component {
 			var templ_7745c5c3_Var18 string
 			templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(round.Left.GetPlayer().GetName())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 87, Col: 42}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 90, Col: 42}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 			if templ_7745c5c3_Err != nil {
@@ -348,7 +349,7 @@ func PlayerRounds(board *board.Board, player *player.Player) templ.Component {
 			var templ_7745c5c3_Var19 string
 			templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(round.Right.GetPlayer().GetIcon())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 92, Col: 50}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 95, Col: 50}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 			if templ_7745c5c3_Err != nil {
@@ -361,7 +362,7 @@ func PlayerRounds(board *board.Board, player *player.Player) templ.Component {
 			var templ_7745c5c3_Var20 string
 			templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(round.Right.GetPlayer().GetModelName())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 92, Col: 97}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 95, Col: 97}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 			if templ_7745c5c3_Err != nil {
@@ -374,7 +375,7 @@ func PlayerRounds(board *board.Board, player *player.Player) templ.Component {
 			var templ_7745c5c3_Var21 string
 			templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(round.Right.GetPlayer().GetName())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 94, Col: 43}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 97, Col: 43}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 			if templ_7745c5c3_Err != nil {
@@ -421,7 +422,7 @@ func scoreBage(score int) templ.Component {
 			var templ_7745c5c3_Var23 string
 			templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(score))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 106, Col: 26}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 109, Col: 26}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 			if templ_7745c5c3_Err != nil {
@@ -439,7 +440,7 @@ func scoreBage(score int) templ.Component {
 			var templ_7745c5c3_Var24 string
 			templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(score))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 111, Col: 26}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/boardview/boardview.templ`, Line: 114, Col: 26}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 			if templ_7745c5c3_Err != nil {

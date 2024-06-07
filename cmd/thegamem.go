@@ -59,8 +59,9 @@ func main() {
 	loggedIn.POST("/addboard", newGameHandler.HandleAddBoardPost)
 
 	loggedIn.GET("/boards/:id", newGameHandler.HandleBoard)
-
 	loggedIn.POST("/boardroundsforplayer", newGameHandler.HandleRoundsForPlayerPost)
+
+	loggedIn.GET("/board/:boardId/round/:roundId", newGameHandler.HandleRound)
 
 	log.Fatal(app.Start(":" + sv.AppPort))
 }
