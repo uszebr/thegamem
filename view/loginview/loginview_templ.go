@@ -39,7 +39,7 @@ func Show(errors []error) templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h1 class=\"text-center\">Login to Game Theory Simulation</h1><div class=\"container mt-5\" id=\"result-container\"><div class=\"row justify-content-center\"><div class=\"col-md-6\"><div class=\"card\"><div class=\"card-header\">Login </div><div class=\"card-body\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h1 class=\"text-center\">Login to Game Theory Simulation</h1><div class=\"container mt-5\" id=\"result-container\"><div class=\"row justify-content-center\"><div class=\"col-md-6\"><div class=\"card bg-light\"><div class=\"card-header\">Login </div><div class=\"card-body\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

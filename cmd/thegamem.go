@@ -47,12 +47,20 @@ func main() {
 
 	//loggedin urls
 	loggedIn := app.Group("")
-	loggedIn.POST("/logout", loginHandler.LogoutPost)
 	loggedIn.Use(userMiddleware.LoggedIn)
+	loggedIn.POST("/logout", loginHandler.LogoutPost)
 
 	newGameHandler := newgamehandler.New(usergames.GetUserGames(), modelfactory.GetModelFactory())
 
 	loggedIn.GET("/newgame", newGameHandler.HandleShow)
+	loggedIn.POST("/newgame", newGameHandler.HandlePost)
+
+	loggedIn.GET("/game", newGameHandler.HandleExistingGame)
+	loggedIn.POST("/addboard", newGameHandler.HandleAddBoardPost)
+
+	loggedIn.GET("/boards/:id", newGameHandler.HandleBoard)
+
+	loggedIn.POST("/boardroundsforplayer", newGameHandler.HandleRoundsForPlayerPost)
 
 	log.Fatal(app.Start(":" + sv.AppPort))
 }

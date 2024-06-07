@@ -6,6 +6,10 @@ import "github.com/uszebr/thegamem/play/board/coordinate"
 // board considered as endless
 type PairsNeighbour struct{}
 
+const (
+	descriptionNeighbour = "Pair only neighbour players on the board"
+)
+
 func (pairsNeighbour PairsNeighbour) CreatePairs(boardCols, boardRows int) ([]coordinate.PositionPair, error) {
 	result := make([]coordinate.PositionPair, 0)
 	calculatedPositions := make([]coordinate.Position, 0, boardCols*boardRows)
@@ -25,4 +29,8 @@ func (pairsNeighbour PairsNeighbour) CreatePairs(boardCols, boardRows int) ([]co
 		}
 	}
 	return result, nil
+}
+
+func (pairsNeighbour PairsNeighbour) GetDescription() string {
+	return descriptionNeighbour
 }

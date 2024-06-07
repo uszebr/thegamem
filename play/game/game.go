@@ -15,22 +15,21 @@ type Game struct {
 	interactions int
 
 	//Slice of boards for particular game. Next board added to the end
-	boards        []*board.Board
-	initialModels []string
-	rotation      int // quantity of players winners/losers we need to remove/multiply after each board played and transfer to the next bord
-
-	pairsCreatorI board.PairsCreatorI
+	boards         []*board.Board
+	initialModels  []string
+	rotation       int  // quantity of players winners/losers we need to remove/multiply after each board played and transfer to the next bord
+	shufflePlayers bool //should we shuffle players between boards
+	pairsCreatorI  board.PairsCreatorI
 }
 
 // all parameters should be checked before.. after form submission
-func New(col int, row int, interactions int, initialModels []string, pairCreator board.PairsCreatorI, rotation int) *Game {
-	return &Game{row: row, col: col, interactions: interactions, initialModels: initialModels, pairsCreatorI: pairCreator, rotation: rotation}
+func New(col int, row int, interactions int, initialModels []string, pairCreator board.PairsCreatorI, rotation int, shufflePlayers bool) *Game {
+	return &Game{row: row, col: col, interactions: interactions, initialModels: initialModels, pairsCreatorI: pairCreator, rotation: rotation, shufflePlayers: shufflePlayers}
 }
 
 func (game *Game) AddNewBoard() error {
 	var boardToAdd *board.Board
 	if len(game.boards) == 0 {
-		//todo
 		//initial board creation
 		modelsWithQuantity := getInitialModelQuantities(game.col, game.row, game.initialModels)
 
@@ -38,7 +37,9 @@ func (game *Game) AddNewBoard() error {
 		if err != nil {
 			return err
 		}
-		boardToAdd, err = board.New(game.col, game.row, players, game.interactions, game.pairsCreatorI, game.rotation)
+		//initial players are always shuffled
+		playersShuffled := gameutil.ShufflePlayers(players)
+		boardToAdd, err = board.New(game.col, game.row, playersShuffled, game.interactions, game.pairsCreatorI, game.rotation)
 		if err != nil {
 			return err
 		}
@@ -61,14 +62,48 @@ func (game *Game) AddNewBoard() error {
 			winnerCopy := player.New(factory.MustCreateModel(winners[index].Player.GetModelName()))
 			playersWithCoordinatesToAdd[looserPosition.X][looserPosition.Y] = winnerCopy
 		}
+		playersWithCoordinatesToAddFlatList := gameutil.ConvertPlayerFlatList(playersWithCoordinatesToAdd)
+		if game.shufflePlayers {
+			playersWithCoordinatesToAddFlatList = gameutil.ShufflePlayers(playersWithCoordinatesToAddFlatList)
+		}
 		var err error
-		boardToAdd, err = board.New(game.col, game.row, gameutil.ConvertPlayerFlatList(playersWithCoordinatesToAdd), game.interactions, game.pairsCreatorI, game.rotation)
+		boardToAdd, err = board.New(game.col, game.row, playersWithCoordinatesToAddFlatList, game.interactions, game.pairsCreatorI, game.rotation)
 		if err != nil {
 			return err
 		}
 	}
 	game.boards = append(game.boards, boardToAdd)
 	return nil
+}
+
+func (game *Game) GetBoards() []*board.Board {
+	return game.boards
+}
+func (game *Game) GetCols() int {
+	return game.col
+}
+func (game *Game) GetRows() int {
+	return game.row
+}
+func (game *Game) GetInteractions() int {
+	return game.interactions
+}
+func (game *Game) GetRotations() int {
+	return game.rotation
+}
+func (game *Game) GetShuffle() bool {
+	return game.shufflePlayers
+}
+func (game *Game) GetBoardsQuantity() int {
+	return len(game.GetBoards())
+}
+
+func (game *Game) GetPairDescription() string {
+	return game.pairsCreatorI.GetDescription()
+}
+
+func (game *Game) GetInitialModels() []string {
+	return game.initialModels
 }
 
 // calculating quantity of each model players(even distribution of all models)

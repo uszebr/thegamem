@@ -8,7 +8,7 @@ import(
 const (
     title= "New Game creation"
 )
-templ Show(user entity.UserAuth,allmodels []string,gamePresent bool){
+templ Show(user entity.UserAuth,allmodels []string,gamePresent bool,errors []string){
     @baseview.BaseWithNav(title){
         <h1 class="text-center">Create new game</h1>
         if gamePresent {
@@ -16,24 +16,15 @@ templ Show(user entity.UserAuth,allmodels []string,gamePresent bool){
             Game is already present. You can use it on  <a href="/game" class="alert-link">Game Page</a>. Or create new one using this form.
         </div> 
         }
-
-        <div class="row justify-content-center">
-            <div class="col-xl-4 col-lg-5 col-md-6 col-sm-10">
-                <div class="card">
-                    <div id="boardForm" class="bg-light card-body">
-                        @gameCreateForm(allmodels)
-                    </div>
-                </div>
-            </div>
-        </div>
+        @GameCreateForm(allmodels,errors)
     }
 }
 
-templ gameCreateForm(allmodels []string){
-<form  hx-post="/boardcreate" id="create-board-form" hx-target="#create-result">
-  <div class="row" id="create-result">
-     
-  </div>
+templ GameCreateForm(allmodels []string,errors []string){
+<div id="create-result" class="row justify-content-center">
+<div class="card bg-light col-xl-4 col-lg-5 col-md-6 col-sm-10">
+<form class="card-body" hx-post="/newgame" id="create-game-form" hx-target="#create-result" hx-swap="outerHTML">
+ @newGameFormErrors(errors)
    <div class="row">
     <div class="col">
       <label for="columnsinput">Cols 2 and more</label>
@@ -103,8 +94,9 @@ templ gameCreateForm(allmodels []string){
   </div>
   <button type="submit" class="btn btn-primary">Create Game</button>
 </form>
+</div>
+</div>
 }
-
 
 templ modelCheckbox(modelName string){
 <div class="form-check mb-3">
@@ -113,11 +105,16 @@ templ modelCheckbox(modelName string){
 </div>
 }
 
-templ CreateGameSuccess(){
-<div class="alert alert-primary" role="alert">
-    Board Created. <a href="/game" class="alert-link">You can use it here</a>
-</div>
+templ newGameFormErrors(errors []string){
+    if len(errors)>0{
+    <div class="row" id="newGameErrors">
+        for _,onEr:= range errors{
+            <div class="alert alert-danger" role="alert">{onEr}</div>
+        }
+    </div>
+    }
 }
+
 
 
     

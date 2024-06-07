@@ -1,0 +1,96 @@
+package gameview
+
+import "github.com/uszebr/thegamem/play/board"
+
+
+import(
+	"github.com/uszebr/thegamem/internal/entity"
+	"github.com/uszebr/thegamem/view/component/baseview"
+	"github.com/uszebr/thegamem/play/game"
+  "strconv"
+  "fmt"
+)
+
+const (
+	title= "Game and Boards"
+)
+
+templ Show(user entity.UserAuth,allmodels []string,game *game.Game){
+@baseview.BaseWithNav(title){
+	<h1 class="text-center">Game</h1>
+    <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">
+        <!-- Left panel content -->
+        <h3>Boards</h3>
+      	@BoardsPanel(game.GetBoards(),-1)
+      </div>
+      <div class="col-12 col-sm-8 col-md-9 col-lg-10 col-xl-10">
+        <!-- Right panel content -->
+        <h3>Right Panel</h3>
+
+       <div class="row">
+        @showGameInfo(game)
+        @showGameModels(game)
+       </div>
+      </div>
+    </div>
+  </div>
+	}
+		
+}
+
+templ BoardsPanel(boards []*board.Board,activeBoardIndex int) {
+<div  id="boards-panel">
+<div class="m-2  row"> 
+// <button type="button" class="btn btn-warning" hx-post="/addboard" hx-target="#boards-panel" hx-swap="outerHTML">Add Board</button>
+<button type="button" class="btn btn-warning" hx-post="/addboard" hx-target="#boards-panel" hx-vals={ activeVal(activeBoardIndex) } hx-swap="outerHTML">Add Board</button>
+ 
+</div>
+  <div id="boards-list" class="m-2 row btn-group-vertical" role="group" >
+  for i,b:= range boards{
+    if i== activeBoardIndex{
+      <a type="link" role="button" href={templ.URL("/boards/"+b.GetUUID())} class="btn btn-primary">Board {strconv.Itoa(i)}</a>
+    }else{
+      <a type="link" role="button" href={templ.URL("/boards/"+b.GetUUID())} class="btn btn-outline-primary">Board {strconv.Itoa(i)}</a>
+    }
+  
+  }
+  </div>
+</div>
+}
+
+templ showGameInfo(game *game.Game){
+  <div id="game-info" class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-2 card m-2"  >
+    <div class="card-header">
+      Game Info
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">Cols {strconv.Itoa(game.GetCols())}</li>
+        <li class="list-group-item">Rows {strconv.Itoa(game.GetRows())}</li>
+        <li class="list-group-item">Interactions: {strconv.Itoa(game.GetInteractions())}</li>
+        <li class="list-group-item">Rotation: {strconv.Itoa(game.GetRotations())}</li>
+        <li class="list-group-item">Shuffling: {strconv.FormatBool(game.GetShuffle())}</li>
+        <li class="list-group-item">Pairs: {game.GetPairDescription()}</li>
+    </ul>
+    // todo add link for each model to the page with ALL models info
+   
+  </div>
+}
+
+templ showGameModels(game *game.Game){
+  <div id="game-models" class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-2 card m-2"  >
+    <div class="card-header">
+      Models
+    </div>
+    <div class="list-group">
+          for _,model:= range game.GetInitialModels(){
+            <a href="#" class="list-group-item list-group-item-info">{model}</a>
+          }
+    </div>
+  </div>
+}
+
+func activeVal(active int) string {
+    return fmt.Sprintf(`{"active": "%v"}`, active) 
+}

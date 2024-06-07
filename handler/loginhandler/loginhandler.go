@@ -1,6 +1,7 @@
 package loginhandler
 
 import (
+	"log/slog"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -38,6 +39,7 @@ func (h *LoginHandler) HandlePost(c echo.Context) error {
 }
 
 func (h *LoginHandler) LogoutPost(c echo.Context) error {
+	slog.Debug("Logout Post")
 
 	ctx := c.Request().Context()
 	if _, ok := ctx.Value("user").(entity.UserAuth); ok {

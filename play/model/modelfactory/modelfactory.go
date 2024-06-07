@@ -22,7 +22,8 @@ type ModelCreatorI interface {
 }
 
 type ModelFactory struct {
-	models map[string]ModelCreatorI
+	models     map[string]ModelCreatorI
+	modelNames []string
 }
 
 // Singleton
@@ -36,7 +37,11 @@ func GetModelFactory() *ModelFactory {
 			"copystartred":   modcopystartred.ModCopyStrartRed{},
 			"random":         modrandom.ModRandom{},
 		}
-		modalFactory = ModelFactory{models: models}
+		modelNames := make([]string, 0, len(models))
+		for key := range models {
+			modelNames = append(modelNames, key)
+		}
+		modalFactory = ModelFactory{models: models, modelNames: modelNames}
 	})
 	return &modalFactory
 }
@@ -51,9 +56,5 @@ func (factory ModelFactory) MustCreateModel(modelName string) model.Model {
 }
 
 func (factory ModelFactory) GetAllModelNames() []string {
-	keys := make([]string, 0, len(factory.models))
-	for key := range factory.models {
-		keys = append(keys, key)
-	}
-	return keys
+	return factory.modelNames
 }
