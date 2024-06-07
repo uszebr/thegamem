@@ -1,6 +1,8 @@
 package game
 
 import (
+	"fmt"
+
 	"github.com/uszebr/thegamem/play/board"
 	"github.com/uszebr/thegamem/play/game/gameutil"
 	"github.com/uszebr/thegamem/play/model/modelfactory"
@@ -79,21 +81,36 @@ func (game *Game) AddNewBoard() error {
 func (game *Game) GetBoards() []*board.Board {
 	return game.boards
 }
+
+func (game *Game) GetBoardByUUID(uuid string) (*board.Board, error) {
+	for _, b := range game.GetBoards() {
+		if b.GetUUID() == uuid {
+			return b, nil
+		}
+	}
+	return &board.Board{}, fmt.Errorf("Issue Board for uuid: %v", uuid)
+}
+
 func (game *Game) GetCols() int {
 	return game.col
 }
+
 func (game *Game) GetRows() int {
 	return game.row
 }
+
 func (game *Game) GetInteractions() int {
 	return game.interactions
 }
+
 func (game *Game) GetRotations() int {
 	return game.rotation
 }
+
 func (game *Game) GetShuffle() bool {
 	return game.shufflePlayers
 }
+
 func (game *Game) GetBoardsQuantity() int {
 	return len(game.GetBoards())
 }

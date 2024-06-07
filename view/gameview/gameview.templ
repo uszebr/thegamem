@@ -1,7 +1,5 @@
 package gameview
 
-import "github.com/uszebr/thegamem/play/board"
-
 
 import(
 	"github.com/uszebr/thegamem/internal/entity"
@@ -9,6 +7,8 @@ import(
 	"github.com/uszebr/thegamem/play/game"
   "strconv"
   "fmt"
+  "github.com/uszebr/thegamem/internal/urlservice"
+  "github.com/uszebr/thegamem/play/board"
 )
 
 const (
@@ -23,7 +23,7 @@ templ Show(user entity.UserAuth,allmodels []string,game *game.Game){
       <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">
         <!-- Left panel content -->
         <h3>Boards</h3>
-      	@BoardsPanel(game.GetBoards(),-1)
+      	@BoardsPanel(game.GetBoards(),-1,game)
       </div>
       <div class="col-12 col-sm-8 col-md-9 col-lg-10 col-xl-10">
         <!-- Right panel content -->
@@ -40,7 +40,7 @@ templ Show(user entity.UserAuth,allmodels []string,game *game.Game){
 		
 }
 
-templ BoardsPanel(boards []*board.Board,activeBoardIndex int) {
+templ BoardsPanel(boards []*board.Board,activeBoardIndex int,g *game.Game) {
 <div  id="boards-panel">
 <div class="m-2  row"> 
 // <button type="button" class="btn btn-warning" hx-post="/addboard" hx-target="#boards-panel" hx-swap="outerHTML">Add Board</button>
@@ -50,9 +50,9 @@ templ BoardsPanel(boards []*board.Board,activeBoardIndex int) {
   <div id="boards-list" class="m-2 row btn-group-vertical" role="group" >
   for i,b:= range boards{
     if i== activeBoardIndex{
-      <a type="link" role="button" href={templ.URL("/boards/"+b.GetUUID())} class="btn btn-primary">Board {strconv.Itoa(i)}</a>
+      <a type="link" role="button" href={templ.URL(urlservice.GetBoardUrl(g,b))} class="btn btn-primary">Board {strconv.Itoa(i)}</a>
     }else{
-      <a type="link" role="button" href={templ.URL("/boards/"+b.GetUUID())} class="btn btn-outline-primary">Board {strconv.Itoa(i)}</a>
+      <a type="link" role="button" href={templ.URL(urlservice.GetBoardUrl(g,b))} class="btn btn-outline-primary">Board {strconv.Itoa(i)}</a>
     }
   
   }

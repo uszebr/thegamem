@@ -1,0 +1,155 @@
+package roundview
+
+import "github.com/uszebr/thegamem/play/round"
+import "github.com/uszebr/thegamem/play/board"
+import "github.com/uszebr/thegamem/view/component/baseview"
+import "github.com/uszebr/thegamem/play/game"
+import "github.com/uszebr/thegamem/internal/urlservice"
+import "strconv"
+import "github.com/uszebr/thegamem/play/player"
+import "github.com/uszebr/thegamem/play/signal"
+ 
+
+
+
+const (
+	title = "Thegam Round"
+)
+
+templ Show(particularRound *round.Round, particularBoard *board.Board, game *game.Game){
+@baseview.BaseWithNav(title + particularBoard.GetUUID()){
+	<h1 class="text-center">Round {particularRound.GetUUID()}</h1>
+    <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+        <!-- Left panel content -->
+
+      	 <a class="btn btn-primary btn-sm m-1" href={templ.URL(urlservice.GetBoardUrl(game,particularBoard))} role="button" title="Back to the board view">
+         Back to Board
+         </a>
+         <a class="btn btn-primary btn-sm m-1" href={templ.URL(urlservice.GetGameUrl(game))} role="button" title="Back to the board view">
+         Back to Game
+         </a>
+        <div class="row">
+           <div  id="round-info">
+            @roundInfoCard(particularRound)
+           </div>
+           <div id="player-left">
+              @playerCard(particularRound.Left.GetPlayer(),"Left",particularRound.Left.RoundScoreSum)
+            </div>
+            <div id="player-right">
+               @playerCard(particularRound.Right.GetPlayer(),"Right",particularRound.Right.RoundScoreSum)
+            </div>
+        </div>
+        
+      </div>
+      <div class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">>
+        <!-- Right panel content -->
+        <h3> Round</h3>
+        <p>This is the right panel.</p>
+          <div id="signals" >
+            @roundTable(particularRound)
+          </div>
+       </div>
+    </div>
+  </div>
+}	
+}
+
+
+templ playerCard(player *player.Player, playerPosition string, score int){
+  <div class="card"  >
+    <div class="card-body ">
+        <h5 class="card-title">Player {playerPosition}</h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary">
+            Name: {player.GetName()} Score: {strconv.Itoa(score)}
+        </h6>
+         <img src={player.GetIcon()} class="img-fluid rounded border" style="border-width: 1px;"  width="70px" alt={player.GetModelName()}/>
+        <p class="card-text">
+           Model Description: {player.GetModelDescription()}
+        </p>
+        <p class="card-text">
+          Model: {player.GetModelName()}
+        </p>
+    </div>
+  </div>
+}
+
+templ roundInfoCard(round *round.Round){
+  <div class="card"  >
+    <div class="card-body">
+        <h5 class="card-title">Round {round.GetUUID()}</h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary">
+        ID: {round.GetUUID()}
+        </h6>
+         <p class="card-text">
+         Interactions Quantity: {strconv.Itoa(round.GetInteractionsQuantity())}
+         </p>
+    </div>
+  </div>
+}
+
+
+
+//TODO add checker for history len equals left/right.. if not show error..
+templ roundTable(round *round.Round){
+     <div   class="table-responsive" >
+
+   <table class="table table-sm table-borderless" >         
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col"  class="bg-light" >Left</th>
+      <th scope="col"  class="bg-light" >Sum</th>
+      <th scope="col"  class="bg-light" >Right</th>
+      <th scope="col"  class="bg-light" >Sum</th>
+    </tr>
+  </thead>
+    <tbody>  
+         @roundData(round)
+    </tbody>
+  </table>
+  </div>
+}
+
+
+templ roundData(round *round.Round){
+  for index:= range len(round.Left.Signals){
+    <tr>
+    <td id={"index"+strconv.Itoa(index)}>
+         {strconv.Itoa(index)}
+    </td>
+    <td id={"leftscore"+strconv.Itoa(index)} class={GetClassForSignal(round.Left.Signals[index])} >
+         {GetSignalWithSign(round.Left.Scores[index])}
+    </td>
+    <td id={"leftsum"+strconv.Itoa(index)} >   
+         {strconv.Itoa(round.Left.ScoreSums[index])}
+    </td>
+      <td id={"rightscore"+strconv.Itoa(index)} class={GetClassForSignal(round.Right.Signals[index])} >
+         {GetSignalWithSign(round.Right.Scores[index])}
+    </td>
+    <td id={"rightsum"+strconv.Itoa(index)} >   
+         {strconv.Itoa(round.Right.ScoreSums[index])}
+    </td>
+    </tr>
+  }
+}
+
+func GetSignalWithSign(score int)string{
+if score>=0{
+    return "+" + strconv.Itoa(score)
+}else{
+    return strconv.Itoa(score)
+}
+}
+
+func GetClassForSignal(s  signal.Signal) string{
+    if s == signal.Green {
+        return "bg-info"
+    }
+    if s== signal.Red {
+        return "bg-warning"
+    }
+    panic("Can not find right signal for show round")
+}
+

@@ -10,11 +10,11 @@ import "context"
 import "io"
 import "bytes"
 
-import "github.com/uszebr/thegamem/play/board"
-
 import (
 	"fmt"
 	"github.com/uszebr/thegamem/internal/entity"
+	"github.com/uszebr/thegamem/internal/urlservice"
+	"github.com/uszebr/thegamem/play/board"
 	"github.com/uszebr/thegamem/play/game"
 	"github.com/uszebr/thegamem/view/component/baseview"
 	"strconv"
@@ -47,7 +47,7 @@ func Show(user entity.UserAuth, allmodels []string, game *game.Game) templ.Compo
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = BoardsPanel(game.GetBoards(), -1).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = BoardsPanel(game.GetBoards(), -1, game).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -83,7 +83,7 @@ func Show(user entity.UserAuth, allmodels []string, game *game.Game) templ.Compo
 	})
 }
 
-func BoardsPanel(boards []*board.Board, activeBoardIndex int) templ.Component {
+func BoardsPanel(boards []*board.Board, activeBoardIndex int, g *game.Game) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -119,7 +119,7 @@ func BoardsPanel(boards []*board.Board, activeBoardIndex int) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var5 templ.SafeURL = templ.URL("/boards/" + b.GetUUID())
+				var templ_7745c5c3_Var5 templ.SafeURL = templ.URL(urlservice.GetBoardUrl(g, b))
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var5)))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -131,7 +131,7 @@ func BoardsPanel(boards []*board.Board, activeBoardIndex int) templ.Component {
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(i))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/gameview/gameview.templ`, Line: 53, Col: 122}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/gameview/gameview.templ`, Line: 53, Col: 127}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
@@ -146,7 +146,7 @@ func BoardsPanel(boards []*board.Board, activeBoardIndex int) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var7 templ.SafeURL = templ.URL("/boards/" + b.GetUUID())
+				var templ_7745c5c3_Var7 templ.SafeURL = templ.URL(urlservice.GetBoardUrl(g, b))
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var7)))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -158,7 +158,7 @@ func BoardsPanel(boards []*board.Board, activeBoardIndex int) templ.Component {
 				var templ_7745c5c3_Var8 string
 				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(i))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/gameview/gameview.templ`, Line: 55, Col: 130}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/gameview/gameview.templ`, Line: 55, Col: 135}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {

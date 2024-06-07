@@ -115,6 +115,15 @@ func (board *Board) GetUUID() string {
 	return board.uuid.String()
 }
 
+func (board *Board) GetRoundByUUID(uuid string) (*round.Round, error) {
+	for _, r := range board.GetAllRounds() {
+		if r.GetUUID() == uuid {
+			return r, nil
+		}
+	}
+	return &round.Round{}, fmt.Errorf("Issue Round for uuid: %v", uuid)
+}
+
 func (board Board) GetAllRounds() []*round.Round {
 	return board.rounds
 }

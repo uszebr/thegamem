@@ -1,5 +1,6 @@
 package boardview
 
+
 import(
     "github.com/uszebr/thegamem/play/board"
     "strconv"
@@ -8,11 +9,13 @@ import(
     "github.com/uszebr/thegamem/play/game"
     "github.com/uszebr/thegamem/view/component/baseview"
     "github.com/uszebr/thegamem/view/gameview"
+    "github.com/uszebr/thegamem/internal/urlservice"
 )
 
 const (
 	title = "Thegam Board"
 )
+
 templ Show(particularBoard *board.Board,active int, game *game.Game){
 @baseview.BaseWithNav(title + particularBoard.GetUUID()){
 	<h1 class="text-center">Board {strconv.Itoa(active)} {particularBoard.GetUUID()}</h1>
@@ -21,7 +24,7 @@ templ Show(particularBoard *board.Board,active int, game *game.Game){
       <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">
         <!-- Left panel content -->
         <h3>Boards</h3>
-      	@gameview.BoardsPanel(game.GetBoards(),active)
+      	@gameview.BoardsPanel(game.GetBoards(),active,game)
       </div>
       <div class="col-12 col-sm-8 col-md-9 col-lg-10 col-xl-10">
         <!-- Right panel content -->
@@ -31,7 +34,7 @@ templ Show(particularBoard *board.Board,active int, game *game.Game){
       //  <button type="button" class="btn btn-warning" hx-post="/addboard" hx-target="#boards-panel" hx-vals={ activeVal(active) } hx-swap="outerHTML">Add Board</button>
       </div>
        <div id="rounds" class="col-12 col-sm-8 col-md-9 col-lg-10 col-xl-10">
-         @PlayerRounds(particularBoard,nil)
+         @PlayerRounds(particularBoard,nil,game)
        </div>
     </div>
   </div>
@@ -56,7 +59,7 @@ templ boardTable(board *board.Board){
     </table>
 }
 
-templ PlayerRounds(board *board.Board, player *player.Player){
+templ PlayerRounds(board *board.Board, player *player.Player,game *game.Game){
  <table class="table">
   <thead>
    if player!=nil{
@@ -77,7 +80,7 @@ templ PlayerRounds(board *board.Board, player *player.Player){
   for index,round:= range board.GetRoundsForPlayer(player){
     <tr>
       <th scope="row">{strconv.Itoa(index) +". "+ round.GetUUID()}
-        <a title="Round Details" itemType="http://schema.org/ImageObject" href={templ.URL( "/round/"+ round.GetUUID())}>
+        <a title="Round Details" itemType="http://schema.org/ImageObject" href={templ.URL(urlservice.GetRoundUrl(game,board,round))}>
           <img src="/static/icons/chart-line.svg" width="20px" />
         </a>
       </th>
