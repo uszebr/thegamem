@@ -57,6 +57,10 @@ func (round *Round) play() {
 	}
 }
 
+func (round *Round) GetUUID() string {
+	return round.uuid.String()
+}
+
 // Randomizing interactions quantities to hide exact quantity of interactions(from model)
 // to avoid "always red" in the last interaction of the Round
 func getApproximateInteractionsQuantity(interactions int, percent int) int {

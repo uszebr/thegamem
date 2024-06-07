@@ -6,8 +6,7 @@ import (
 	"github.com/uszebr/thegamem/view/homeview"
 )
 
-type HomeHandler struct {
-}
+type HomeHandler struct{}
 
 func (h *HomeHandler) HandleShow(c echo.Context) error {
 	return utilhandler.Render(c, homeview.Show())

@@ -1,0 +1,125 @@
+package boardview
+
+import(
+    "github.com/uszebr/thegamem/play/board"
+    "strconv"
+    "fmt"
+    "github.com/uszebr/thegamem/play/player"
+    "github.com/uszebr/thegamem/play/game"
+    "github.com/uszebr/thegamem/view/component/baseview"
+    "github.com/uszebr/thegamem/view/gameview"
+)
+
+const (
+	title = "Thegam Board"
+)
+templ Show(particularBoard *board.Board,active int, game *game.Game){
+@baseview.BaseWithNav(title + particularBoard.GetUUID()){
+	<h1 class="text-center">Board {strconv.Itoa(active)} {particularBoard.GetUUID()}</h1>
+    <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">
+        <!-- Left panel content -->
+        <h3>Boards</h3>
+      	@gameview.BoardsPanel(game.GetBoards(),active)
+      </div>
+      <div class="col-12 col-sm-8 col-md-9 col-lg-10 col-xl-10">
+        <!-- Right panel content -->
+        <h3> Board</h3>
+        <p>This is the right panel.</p>
+        @boardTable(particularBoard)
+      //  <button type="button" class="btn btn-warning" hx-post="/addboard" hx-target="#boards-panel" hx-vals={ activeVal(active) } hx-swap="outerHTML">Add Board</button>
+      </div>
+       <div id="rounds" class="col-12 col-sm-8 col-md-9 col-lg-10 col-xl-10">
+         @PlayerRounds(particularBoard,nil)
+       </div>
+    </div>
+  </div>
+	}	
+}
+
+templ boardTable(board *board.Board){
+     <table class="table table-sm board-table">
+        <tbody>   
+    for row := range board.GetRows(){
+        <tr>
+      for col:= range board.GetCols(){
+             <td>
+                <a title={getPlayerTitle(board.GetPlayers()[col][row])} itemType="http://schema.org/ImageObject" hx-post="/boardroundsforplayer"   hx-vals={ colrowOptions(col, row,board.GetUUID()) } hx-target="#rounds" hx-indicator="true">
+                    <img src={board.GetPlayers()[col][row].GetIcon()} title={getPlayerTitle(board.GetPlayers()[col][row])} width="70px" class="icon-hover"/>
+                </a>
+             </td>
+        }
+        </tr>
+    }
+      </tbody>
+    </table>
+}
+
+templ PlayerRounds(board *board.Board, player *player.Player){
+ <table class="table">
+  <thead>
+   if player!=nil{
+      <tr> 
+       <p>Player: { player.GetName()} Model: {player.GetModelName()} </p>
+        <a class="btn btn-primary btn-sm" href="#" role="button" title="See all player rounds"   hx-post="/boardroundsforplayer"   hx-vals={ colrowOptions(-1, -1,board.GetUUID()) } hx-target="#rounds" hx-indicator="true">
+            See all players rounnds
+        </a>
+      </tr>
+    }
+    <tr>
+      <th scope="col">Round</th>
+      <th scope="col">Left</th>
+      <th scope="col">Right</th>
+    </tr>
+  </thead>
+  <tbody>
+  for index,round:= range board.GetRoundsForPlayer(player){
+    <tr>
+      <th scope="row">{strconv.Itoa(index) +". "+ round.GetUUID()}
+        <a title="Round Details" itemType="http://schema.org/ImageObject" href={templ.URL( "/round/"+ round.GetUUID())}>
+          <img src="/static/icons/chart-line.svg" width="20px" />
+        </a>
+      </th>
+      <td>
+       <img src={round.Left.GetPlayer().GetIcon()} title={round.Left.GetPlayer().GetModelName()} width="40px" />
+       <button type="button" class="btn btn-light position-relative">
+         {round.Left.GetPlayer().GetName()}
+         @scoreBage(round.Left.RoundScoreSum)
+        </button>
+      </td> 
+      <td>
+       <img src={round.Right.GetPlayer().GetIcon()} title={round.Right.GetPlayer().GetModelName()} width="40px" />
+        <button type="button" class="btn btn-light position-relative">
+         {round.Right.GetPlayer().GetName()}
+         @scoreBage(round.Right.RoundScoreSum)
+        </button>
+      </td>
+    </tr>
+  }
+  </tbody>
+</table>
+}
+templ scoreBage(score int){
+  if score>0{
+ <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+      {strconv.Itoa(score)}
+      <span class="visually-hidden">scores for player</span>
+   </span>
+  }else{
+ <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+      {strconv.Itoa(score)}
+      <span class="visually-hidden">scores for player</span>
+   </span>
+  }
+}
+
+func getPlayerTitle(player *player.Player)string{
+    return  "("+player.GetModelName()+ ") "+player.GetName()
+}
+
+// Creating parameters for post request particular player rounds
+func colrowOptions(col, row int, board string) string {
+    return fmt.Sprintf(`{"col": "%v", "row": "%v", "board": "%v"}`, col, row,board) 
+}
+

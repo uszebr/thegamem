@@ -1,0 +1,10 @@
+package fullpageview
+
+import "github.com/uszebr/thegamem/view/component/baseview"
+import "github.com/uszebr/thegamem/view/component/cardview"
+
+templ FullPageWithError(title string,header string, message string){
+	@baseview.BaseWithNav(title ){
+		@cardview.ShowDangerCart(header,message)
+	}
+}

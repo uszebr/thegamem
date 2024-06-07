@@ -12,6 +12,7 @@ import (
 
 type PairsCreatorI interface {
 	CreatePairs(boardCols, boardRows int) ([]coordinate.PositionPair, error)
+	GetDescription() string
 }
 
 type Board struct {
@@ -199,4 +200,11 @@ func (board *Board) GetPositionForPlayer(playerToFind *player.Player) (coordinat
 		}
 	}
 	return coordinate.Position{}, fmt.Errorf("Player not found on the board")
+}
+
+func (board *Board) GetCols() int {
+	return board.cols
+}
+func (board *Board) GetRows() int {
+	return board.rows
 }

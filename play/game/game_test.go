@@ -42,21 +42,22 @@ var (
 
 func TestGameNew(t *testing.T) {
 	tests := []struct {
-		name          string
-		col           int
-		row           int
-		interactions  int
-		initialModels []string
-		rotation      int
-		pairsCreator  board.PairsCreatorI
+		name           string
+		col            int
+		row            int
+		interactions   int
+		initialModels  []string
+		rotation       int
+		pairsCreator   board.PairsCreatorI
+		shufflePlayers bool
 	}{
-		{name: "Game smoke 3 by 4", col: 3, row: 4, interactions: 10, initialModels: []string{"alwaysred"}, pairsCreator: pair.PairsNeighbour{}},
-		{name: "Game smoke 5 by 10", col: 5, row: 10, interactions: 4, initialModels: []string{"alwaysred", "alwaysgreen"}, pairsCreator: pair.PairAll{}},
+		{name: "Game smoke 3 by 4", col: 3, row: 4, interactions: 10, initialModels: []string{"alwaysred"}, pairsCreator: pair.PairsNeighbour{}, shufflePlayers: false},
+		{name: "Game smoke 5 by 10", col: 5, row: 10, interactions: 4, initialModels: []string{"alwaysred", "alwaysgreen"}, pairsCreator: pair.PairAll{}, shufflePlayers: false},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 
-			game := New(test.col, test.row, test.interactions, test.initialModels, test.pairsCreator, test.rotation)
+			game := New(test.col, test.row, test.interactions, test.initialModels, test.pairsCreator, test.rotation, test.shufflePlayers)
 			assert.Equal(t, test.col, game.col)
 			assert.Equal(t, test.row, game.row)
 			assert.Equal(t, test.interactions, game.interactions)
@@ -78,21 +79,22 @@ func TestAddBoard(t *testing.T) {
 		rotation       int
 		pairsCreator   board.PairsCreatorI
 		roundsExpected int
+		shufflePlayers bool
 	}{
 		// first two are impossible scenarious that need to be filtered on the form submit
 		// ???might be make sense to sanitizing check those cases in game constructor???
-		{name: "Add Board smoke 1 by 1", roundsExpected: 0, col: 1, row: 1, interactions: 10, initialModels: []string{"alwaysred"}, pairsCreator: pair.PairsNeighbour{}, rotation: 1},
-		{name: "Add Board smoke 1 by 2", roundsExpected: 1, col: 1, row: 2, interactions: 10, initialModels: []string{"alwaysred"}, pairsCreator: pair.PairsNeighbour{}, rotation: 1},
-		{name: "Add Board smoke 2 by 2", roundsExpected: 6, col: 2, row: 2, interactions: 10, initialModels: []string{"alwaysred"}, pairsCreator: pair.PairsNeighbour{}, rotation: 2},
-		{name: "Add Board smoke 2 by 2 with rotation", roundsExpected: 6, col: 2, row: 2, interactions: 10, initialModels: []string{"alwaysred"}, pairsCreator: pair.PairAll{}, rotation: 1},
-		{name: "Add Board smoke 2 by 2 with All pairs", roundsExpected: 6, col: 2, row: 2, interactions: 10, initialModels: []string{"alwaysred"}, pairsCreator: pair.PairAll{}, rotation: 1},
-		{name: "Add Board smoke 5 by 10", roundsExpected: 1225, col: 5, row: 10, interactions: 4, initialModels: []string{"alwaysred", "alwaysgreen"}, pairsCreator: pair.PairAll{}, rotation: 1},
-		{name: "Add Board smoke 3 by 4 with rotation", roundsExpected: 190, col: 5, row: 4, interactions: 4, initialModels: []string{"alwaysred", "alwaysgreen", "blindrevenge", "random"}, pairsCreator: pair.PairAll{}, rotation: 5},
+		{name: "Add Board smoke 1 by 1", roundsExpected: 0, col: 1, row: 1, interactions: 10, initialModels: []string{"alwaysred"}, pairsCreator: pair.PairsNeighbour{}, rotation: 1, shufflePlayers: false},
+		{name: "Add Board smoke 1 by 2", roundsExpected: 1, col: 1, row: 2, interactions: 10, initialModels: []string{"alwaysred"}, pairsCreator: pair.PairsNeighbour{}, rotation: 1, shufflePlayers: false},
+		{name: "Add Board smoke 2 by 2", roundsExpected: 6, col: 2, row: 2, interactions: 10, initialModels: []string{"alwaysred"}, pairsCreator: pair.PairsNeighbour{}, rotation: 2, shufflePlayers: false},
+		{name: "Add Board smoke 2 by 2 with rotation", roundsExpected: 6, col: 2, row: 2, interactions: 10, initialModels: []string{"alwaysred"}, pairsCreator: pair.PairAll{}, rotation: 1, shufflePlayers: false},
+		{name: "Add Board smoke 2 by 2 with All pairs", roundsExpected: 6, col: 2, row: 2, interactions: 10, initialModels: []string{"alwaysred"}, pairsCreator: pair.PairAll{}, rotation: 1, shufflePlayers: false},
+		{name: "Add Board smoke 5 by 10", roundsExpected: 1225, col: 5, row: 10, interactions: 4, initialModels: []string{"alwaysred", "alwaysgreen"}, pairsCreator: pair.PairAll{}, rotation: 1, shufflePlayers: false},
+		{name: "Add Board smoke 3 by 4 with rotation", roundsExpected: 190, col: 5, row: 4, interactions: 4, initialModels: []string{"alwaysred", "alwaysgreen", "blindrevenge", "random"}, pairsCreator: pair.PairAll{}, rotation: 5, shufflePlayers: false},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 
-			game := New(test.col, test.row, test.interactions, test.initialModels, test.pairsCreator, test.rotation)
+			game := New(test.col, test.row, test.interactions, test.initialModels, test.pairsCreator, test.rotation, test.shufflePlayers)
 			err := game.AddNewBoard()
 			assert.Nil(t, err)
 			assert.Len(t, game.boards, 1)

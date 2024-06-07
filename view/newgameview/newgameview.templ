@@ -1,0 +1,120 @@
+package newgameview
+
+import(
+
+"github.com/uszebr/thegamem/internal/entity"
+"github.com/uszebr/thegamem/view/component/baseview"
+)
+const (
+    title= "New Game creation"
+)
+templ Show(user entity.UserAuth,allmodels []string,gamePresent bool,errors []string){
+    @baseview.BaseWithNav(title){
+        <h1 class="text-center">Create new game</h1>
+        if gamePresent {
+        <div class="alert alert-warning" role="alert">
+            Game is already present. You can use it on  <a href="/game" class="alert-link">Game Page</a>. Or create new one using this form.
+        </div> 
+        }
+        @GameCreateForm(allmodels,errors)
+    }
+}
+
+templ GameCreateForm(allmodels []string,errors []string){
+<div id="create-result" class="row justify-content-center">
+<div class="card bg-light col-xl-4 col-lg-5 col-md-6 col-sm-10">
+<form class="card-body" hx-post="/newgame" id="create-game-form" hx-target="#create-result" hx-swap="outerHTML">
+ @newGameFormErrors(errors)
+   <div class="row">
+    <div class="col">
+      <label for="columnsinput">Cols 2 and more</label>
+      <input type="number" class="form-control" id="columnsinput" name="columnsinput" value="6" placeholder="more than 2"/>
+    </div>
+    <div class="col">
+      <label for="rowsinput">Rows 2 and more</label>
+      <input type="number" class="form-control" id="rowsinput" name="rowsinput" value="4" placeholder="more than 2"/>
+    </div>
+    
+    </div>
+    <div class="row">
+        <div class="col">
+        <label for="interactions">Interactions</label>
+        <input type="number" class="form-control" id="interactions" name="interactions" value="100" />
+        </div>
+      <div class="col">
+      // players rotation quantity
+      // for the next board this quantity of best players(by score) will be duplicated
+      // and substitute worst players in the bottom of the board
+       <label for="rotation">Players Rotation</label>
+      <input type="number" class="form-control" id="rotation" name="rotation" value="5" />
+      </div>
+    </div>
+    <div class="row mt-1 border-bottom">
+    <div class="col">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="neighbours" id="neighbours1" value="neighbours" checked>
+            <label class="form-check-label" for="neighbours1">
+                Only neighbours play on board
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="neighbours" id="neighbours2" value="allplayers">
+            <label class="form-check-label" for="neighbours2">
+                    All plyaers play on board
+            </label>
+        </div>
+    </div>
+       <div class="col" >
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="shufflePlayers" id="shufflePlayers1" value="yes" checked>
+            <label class="form-check-label" for="shufflePlayers1">
+                Shuffle Players on each board
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="shufflePlayers" id="shufflePlayers2" value="no">
+            <label class="form-check-label" for="shufflePlayers2">
+                Board to Board without shuffling
+            </label>
+        </div>
+    </div>
+    </div>
+  <div class="mt-1 row">
+    // Show all model names in two columns
+    <div class="col">
+      for i := 0; i < len(allmodels)/2; i++ {
+         @modelCheckbox(allmodels[i])
+       }
+    </div>
+    <div class="col">
+      for i := len(allmodels)/2; i < len(allmodels); i++ {
+         @modelCheckbox(allmodels[i])
+       }
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Create Game</button>
+</form>
+</div>
+</div>
+}
+
+templ modelCheckbox(modelName string){
+<div class="form-check mb-3">
+    <input type="checkbox" class="form-check-input"  name="modelname" value={modelName}/>
+    <label class="form-check-label" for={modelName}>{modelName}</label>
+</div>
+}
+
+templ newGameFormErrors(errors []string){
+    if len(errors)>0{
+    <div class="row" id="newGameErrors">
+        for _,onEr:= range errors{
+            <div class="alert alert-danger" role="alert">{onEr}</div>
+        }
+    </div>
+    }
+}
+
+
+
+    

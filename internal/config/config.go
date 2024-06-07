@@ -37,7 +37,7 @@ const (
 
 // Env Variables reading
 func readEnvValues() (StartValues, error) {
-	//todo secrets db etc read here
+	//secrets db read in db clien init (supa) purpose - keep them as short as pos in app to prevent leaking
 	if err := godotenv.Load(); err != nil {
 		return StartValues{}, fmt.Errorf("Can not load godotenv %w", err)
 	}

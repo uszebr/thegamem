@@ -6,6 +6,10 @@ import "github.com/uszebr/thegamem/play/board/coordinate"
 // player should play with all other players on the board
 type PairAll struct{}
 
+const (
+	descriptionAll = "Pair each all players on the board"
+)
+
 func (pairAll PairAll) CreatePairs(boardCols, boardRows int) ([]coordinate.PositionPair, error) {
 	result := make([]coordinate.PositionPair, 0)
 	calculatedPositions := make([]coordinate.Position, 0, boardCols*boardRows)
@@ -24,4 +28,8 @@ func (pairAll PairAll) CreatePairs(boardCols, boardRows int) ([]coordinate.Posit
 		}
 	}
 	return result, nil
+}
+
+func (pairAll PairAll) GetDescription() string {
+	return descriptionAll
 }

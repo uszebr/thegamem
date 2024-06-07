@@ -33,7 +33,9 @@ templ Base(title string){
 
 templ BaseWithNav(title string){
 	@Base(title){
+		
 		@navmenuview.Show()
+		<div id="message"></div>
 		{ children...}
 	}
 }

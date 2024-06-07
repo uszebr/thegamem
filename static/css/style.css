@@ -1,0 +1,13 @@
+
+.icon-hover {
+  /* transition: transform 0.2s ease-in-out; */
+  display: block;
+  transition: border 0.1s ease-in-out;
+}
+
+.icon-hover:hover,
+.icon-hover:focus {
+  border: 2px solid #999; /* Adjust the color and width of the border as needed */
+  outline: none; /* Remove the default focus outline */
+ /* transform: scale(1.4);  Increase icon size by 20% on hover/focus */
+}

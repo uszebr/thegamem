@@ -28,6 +28,12 @@ func (player Player) PlayOne(myHistory []signal.Signal, opponentHistory []signal
 func (player Player) GetModelName() string {
 	return player.modeli.GetName()
 }
+func (player Player) GetName() string {
+	return player.name
+}
+func (player Player) GetIcon() string {
+	return player.modeli.GetIcon()
+}
 
 type CalculateSignalI interface {
 	CalculateSignal(myHistory []signal.Signal, opponentHistory []signal.Signal, aproximateInteractions int) signal.Signal

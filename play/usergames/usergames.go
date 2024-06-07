@@ -24,10 +24,10 @@ func GetUserGames() *UserGames {
 }
 
 func new() *UserGames {
-	boards := UserGames{
+	userGames := UserGames{
 		games: make(map[string]*game.Game),
 	}
-	return &boards
+	return &userGames
 }
 
 func (userGames UserGames) GetGameForUser(userId string) (*game.Game, bool) {
