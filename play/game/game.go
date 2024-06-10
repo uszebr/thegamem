@@ -3,6 +3,7 @@ package game
 import (
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/uszebr/thegamem/play/board"
 	"github.com/uszebr/thegamem/play/game/gameutil"
 	"github.com/uszebr/thegamem/play/model/modelfactory"
@@ -22,11 +23,12 @@ type Game struct {
 	rotation       int  // quantity of players winners/losers we need to remove/multiply after each board played and transfer to the next bord
 	shufflePlayers bool //should we shuffle players between boards
 	pairsCreatorI  board.PairsCreatorI
+	uuid           uuid.UUID
 }
 
 // all parameters should be checked before.. after form submission
 func New(col int, row int, interactions int, initialModels []string, pairCreator board.PairsCreatorI, rotation int, shufflePlayers bool) *Game {
-	return &Game{row: row, col: col, interactions: interactions, initialModels: initialModels, pairsCreatorI: pairCreator, rotation: rotation, shufflePlayers: shufflePlayers}
+	return &Game{row: row, col: col, interactions: interactions, initialModels: initialModels, pairsCreatorI: pairCreator, rotation: rotation, shufflePlayers: shufflePlayers, uuid: uuid.New()}
 }
 
 func (game *Game) AddNewBoard() error {
@@ -121,6 +123,9 @@ func (game *Game) GetPairDescription() string {
 
 func (game *Game) GetInitialModels() []string {
 	return game.initialModels
+}
+func (game *Game) GetUUID() string {
+	return game.uuid.String()
 }
 
 // calculating quantity of each model players(even distribution of all models)

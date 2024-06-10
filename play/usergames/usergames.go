@@ -1,6 +1,7 @@
 package usergames
 
 import (
+	"fmt"
 	"sync"
 
 	"github.com/uszebr/thegamem/play/game"
@@ -37,4 +38,13 @@ func (userGames UserGames) GetGameForUser(userId string) (*game.Game, bool) {
 
 func (userGames UserGames) AddGameForUser(userId string, game *game.Game) {
 	userGames.games[userId] = game
+}
+
+func (userGames UserGames) GetGameByUUID(uuid string) (*game.Game, error) {
+	for _, game := range userGames.games {
+		if game.GetUUID() == uuid {
+			return game, nil
+		}
+	}
+	return &game.Game{}, fmt.Errorf("Issue game for uuid: %v", uuid)
 }
