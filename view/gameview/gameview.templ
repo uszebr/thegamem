@@ -44,7 +44,8 @@ templ BoardsPanel(boards []*board.Board,activeBoardIndex int,g *game.Game) {
 <div  id="boards-panel">
 <div class="m-2  row"> 
 // <button type="button" class="btn btn-warning" hx-post="/addboard" hx-target="#boards-panel" hx-swap="outerHTML">Add Board</button>
-<button type="button" class="btn btn-warning" hx-post="/addboard" hx-target="#boards-panel" hx-vals={ activeVal(activeBoardIndex) } hx-swap="outerHTML">Add Board</button>
+<button type="button" class="btn btn-warning m-1" hx-post="/addboard" hx-target="#boards-panel" hx-vals={ activeVal(activeBoardIndex) } hx-swap="outerHTML">Add Board</button>
+<a type="link" role="button" class="btn btn-secondary m-1" href={templ.URL(urlservice.GetGameStatUrl(g))}>Statistics</a>
  
 </div>
   <div id="boards-list" class="m-2 row btn-group-vertical" role="group" >
