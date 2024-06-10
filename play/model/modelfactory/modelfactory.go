@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"github.com/uszebr/thegamem/play/model"
+	"github.com/uszebr/thegamem/play/model/implementation/fiveinteractions/modfivestepfinalconclusion"
 	"github.com/uszebr/thegamem/play/model/implementation/modalwaysgreen"
 	"github.com/uszebr/thegamem/play/model/implementation/modalwaysred"
 	"github.com/uszebr/thegamem/play/model/implementation/modblindrevenge"
@@ -30,12 +31,13 @@ type ModelFactory struct {
 func GetModelFactory() *ModelFactory {
 	once.Do(func() {
 		models := map[string]ModelCreatorI{
-			"alwaysgreen":    modalwaysgreen.ModAlwaysGreen{},
-			"alwaysred":      modalwaysred.ModAlwaysRed{},
-			"blindrevenge":   modblindrevenge.ModBlindRevenge{},
-			"copystartgreen": modcopystartgreen.ModCopyStrartGreen{},
-			"copystartred":   modcopystartred.ModCopyStrartRed{},
-			"random":         modrandom.ModRandom{},
+			"alwaysgreen":             modalwaysgreen.ModAlwaysGreen{},
+			"alwaysred":               modalwaysred.ModAlwaysRed{},
+			"blindrevenge":            modblindrevenge.ModBlindRevenge{},
+			"copystartgreen":          modcopystartgreen.ModCopyStrartGreen{},
+			"copystartred":            modcopystartred.ModCopyStrartRed{},
+			"random":                  modrandom.ModRandom{},
+			"fivestepfinalconclusion": modfivestepfinalconclusion.Modfivestepfinalconclusion{},
 		}
 		modelNames := make([]string, 0, len(models))
 		for key := range models {
