@@ -79,7 +79,7 @@ templ PlayerRounds(board *board.Board, player *player.Player,game *game.Game){
   <tbody>
   for index,round:= range board.GetRoundsForPlayer(player){
     <tr>
-      <th scope="row">{strconv.Itoa(index) +". "+ round.GetUUID()}
+      <th scope="row">{strconv.Itoa(index+1) +" "}
         <a title="Round Details" itemType="http://schema.org/ImageObject" href={templ.URL(urlservice.GetRoundUrl(game,board,round))}>
           <img src="/static/icons/chart-line.svg" width="20px" />
         </a>
