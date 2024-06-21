@@ -1,6 +1,7 @@
 package chartutil
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -21,5 +22,27 @@ func TestSliceIntToString(t *testing.T) {
 	for _, test := range tests {
 		result := SliceIntToString(test.input)
 		assert.Equal(t, test.output, result, "For input %v, expected %s, but got %s", test.input, test.output, result)
+	}
+}
+
+func TestSliceBorderToString(t *testing.T) {
+	tests := []struct {
+		left     int
+		right    int
+		expected string
+	}{
+		{5, 5, "[]"},
+		{6, 5, "[]"},
+		{5, 6, "[5]"},
+		{1, 10, "[1, 2, 3, 4, 5, 6, 7, 8, 9]"},
+		{0, 5, "[0, 1, 2, 3, 4]"},
+		{-3, 3, "[-3, -2, -1, 0, 1, 2]"},
+	}
+
+	for _, test := range tests {
+		t.Run(fmt.Sprintf("left=%d right=%d", test.left, test.right), func(t *testing.T) {
+			result := SliceBorderToString(test.left, test.right)
+			assert.Equal(t, test.expected, result)
+		})
 	}
 }
