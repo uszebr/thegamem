@@ -8,3 +8,5 @@
 # Editor-specific
 .vscode/
 thegamem
+view/chartmodelscore/chartmodelscore.templ
+view/chartmodelscore/chartmodelscore_templ.go
