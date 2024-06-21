@@ -10,3 +10,5 @@
 thegamem
 view/chartmodelscore/chartmodelscore.templ
 view/chartmodelscore/chartmodelscore_templ.go
+view/chart/modelsbyboardview/modelsbyboard_templ.go
+view/chart/modelsbyboardview/modelsbyboard.templ

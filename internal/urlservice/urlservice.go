@@ -22,6 +22,10 @@ func GetGameStatUrl(game *game.Game) string {
 	return fmt.Sprintf("/stat/%v", game.GetUUID())
 }
 
+func GetModelsByBoardUrl(game *game.Game) string {
+	return fmt.Sprintf("/modelquantitybyboards/%v", game.GetUUID())
+}
+
 func GetGameUrl(game *game.Game) string {
 	//todo implement when move to full urls
 	return "/game"
