@@ -50,9 +50,17 @@ func (game *Game) AddNewBoard() error {
 
 	} else {
 		previousBoard := game.boards[len(game.boards)-1]
-		playersWithCoordinatesToAdd := board.MakeBasePlayers(game.col, game.row)
 		playersWithCoordinatePrevious := previousBoard.GetPlayers()
-		copy(playersWithCoordinatesToAdd, playersWithCoordinatePrevious) // copy of players matrix from previous board
+		//	playersWithCoordinatesToAdd := board.MakeBasePlayers(game.col, game.row)
+		//copy(playersWithCoordinatesToAdd, playersWithCoordinatePrevious) // copy of players matrix from previous board
+		playersWithCoordinatesToAdd := make([][]*player.Player, len(playersWithCoordinatePrevious))
+		for col, innerSlice := range playersWithCoordinatePrevious {
+			newInnerSlice := make([]*player.Player, len(innerSlice))
+			for row, levelTwo := range innerSlice {
+				newInnerSlice[row] = levelTwo
+			}
+			playersWithCoordinatesToAdd[col] = newInnerSlice
+		}
 		winners := previousBoard.GetWinners()
 		loosers := previousBoard.GetLoosers()
 
