@@ -18,7 +18,7 @@ func SliceIntToString(nums []int) string {
 	return sb.String()
 }
 
-// result [1, 2, 3, 4, 5, 6, 7, 8, 9]
+// result "[1, 2, 3, 4, 5, 6, 7, 8, 9]"
 func SliceBorderToString(leftIncluded int, rightNotIncluded int) string {
 	var result []string
 	for i := leftIncluded; i < rightNotIncluded; i++ {

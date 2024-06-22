@@ -168,6 +168,14 @@ func (board *Board) GetBoardPlayerScores() map[*player.Player]int {
 	return board.boardScores
 }
 
+func (board *Board) GetPlayerScore(player *player.Player) int {
+	score, ok := board.boardScores[player]
+	if ok {
+		return score
+	}
+	return -1
+}
+
 func (board *Board) calculateRating() {
 	ratings := make([]Rating, 0, board.cols*board.rows)
 	for player, score := range board.boardScores {
