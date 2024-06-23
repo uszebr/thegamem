@@ -30,7 +30,7 @@ func Show() templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if _, ok := ctx.Value("user").(entity.UserAuth); ok {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<li class=\"nav-item\"><a class=\"nav-link\" href=\"#\" hx-post=\"/logout\" hx-swap=\"none\" hx-trigger=\"click\">Logout</a></li><li class=\"nav-item\"><a class=\"nav-link\" href=\"/newgame\">New Game</a></li><li class=\"nav-item\"><a class=\"nav-link\" href=\"/game\">Game</a></li><li class=\"nav-item\"><a class=\"nav-link\" href=\"/statistics\">Statistics</a></li>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<li class=\"nav-item\"><a class=\"nav-link\" href=\"#\" hx-post=\"/logout\" hx-swap=\"none\" hx-trigger=\"click\">Logout</a></li><li class=\"nav-item\"><a class=\"nav-link\" href=\"/newgame\">New Game</a></li><li class=\"nav-item\"><a class=\"nav-link\" href=\"/game\">Game</a></li>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

@@ -9,6 +9,7 @@ import (
 	"github.com/uszebr/thegamem/handler/homehandler"
 	"github.com/uszebr/thegamem/handler/loginhandler"
 	"github.com/uszebr/thegamem/handler/newgamehandler"
+	"github.com/uszebr/thegamem/handler/stathandler"
 	"github.com/uszebr/thegamem/internal/authservice"
 	"github.com/uszebr/thegamem/internal/config"
 	"github.com/uszebr/thegamem/internal/jwtservice"
@@ -62,6 +63,12 @@ func main() {
 	loggedIn.POST("/boardroundsforplayer", newGameHandler.HandleRoundsForPlayerPost)
 
 	loggedIn.GET("/board/:boardId/round/:roundId", newGameHandler.HandleRound)
+
+	//statistics
+	statHandler := stathandler.New(usergames.GetUserGames(), modelfactory.GetModelFactory())
+	public.GET("/stat/:gameId", statHandler.HandleStat)
+
+	public.GET("/modelquantitybyboards/:gameId", statHandler.ModelsByBoardChart)
 
 	log.Fatal(app.Start(":" + sv.AppPort))
 }

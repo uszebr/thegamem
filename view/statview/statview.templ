@@ -1,0 +1,19 @@
+package statview
+
+
+import (
+    "github.com/uszebr/thegamem/view/component/baseview"
+     "github.com/uszebr/thegamem/internal/urlservice"
+	"github.com/uszebr/thegamem/play/game"
+)
+const (
+  title= "Statistics for Game"
+)
+
+templ Show(game *game.Game) {
+  @baseview.BaseWithNav(title){
+      <h1 class="text-center">Welcome to the Game Theory Simulation Statistics</h1>
+      <div hx-get={urlservice.GetModelsByBoardUrl(game)} hx-trigger="load"></div>
+      <div id="chart" class="m-2 col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"></div>
+  }
+}

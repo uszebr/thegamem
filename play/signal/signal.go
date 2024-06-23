@@ -4,7 +4,7 @@ type Signal string
 
 // Rules for Signal calculation might be extracted to the separate entity if needed many
 const (
-	green_green = 5
+	green_green = 4 //5
 	red_red     = 1
 	red_green   = 2
 	green_red   = -2
