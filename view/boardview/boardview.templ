@@ -18,18 +18,19 @@ const (
 
 templ Show(particularBoard *board.Board,active int, game *game.Game){
 @baseview.BaseWithNav(title + particularBoard.GetUUID()){
-	<h1 class="text-center">Board {strconv.Itoa(active)} {particularBoard.GetUUID()}</h1>
+	<h1 class="text-center">Board {strconv.Itoa(active)}</h1>
     <div class="container-fluid">
     <div class="row">
       <div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2">
         <!-- Left panel content -->
         <h3>Boards</h3>
+      
       	@gameview.BoardsPanel(game.GetBoards(),active,game)
       </div>
       <div class="col-12 col-sm-8 col-md-9 col-lg-10 col-xl-10">
         <!-- Right panel content -->
-        <h3> Board</h3>
-        <p>This is the right panel.</p>
+        <h3>Current Board</h3>
+         <p>Score: {strconv.Itoa(particularBoard.GetBoardScoresSum())}. Id: {particularBoard.GetUUID()}</p>
         @boardTable(particularBoard)
       //  <button type="button" class="btn btn-warning" hx-post="/addboard" hx-target="#boards-panel" hx-vals={ activeVal(active) } hx-swap="outerHTML">Add Board</button>
       </div>
@@ -38,6 +39,34 @@ templ Show(particularBoard *board.Board,active int, game *game.Game){
        </div>
     </div>
   </div>
+ 
+      <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var divs = document.querySelectorAll('.background-div');
+            divs.forEach(function(div) {
+                var bgImage = div.getAttribute('data-bg-image');
+                var bgSize = div.getAttribute('data-bg-size');
+                var bgRepeat = div.getAttribute('data-bg-repeat');
+                var bgPosition = div.getAttribute('data-bg-position');
+                if (bgImage) {
+                    div.style.backgroundImage = 'url(' + bgImage + ')';
+                }
+                if (bgSize) {
+                    div.style.backgroundSize = bgSize;
+                }
+                if (bgRepeat) {
+                    div.style.backgroundRepeat = bgRepeat;
+                }
+                if (bgPosition) {
+                    div.style.backgroundPosition = bgPosition;
+                }
+                div.style.width = '70px';
+                div.style.height = '70px';
+                div.style.cursor = 'pointer';
+                div.style.position = 'relative';
+            });
+        });
+    </script>
 	}	
 }
 
@@ -48,8 +77,21 @@ templ boardTable(board *board.Board){
         <tr>
       for col:= range board.GetCols(){
              <td>
-                <a title={getPlayerTitle(board.GetPlayers()[col][row])} itemType="http://schema.org/ImageObject" hx-post="/boardroundsforplayer"   hx-vals={ colrowOptions(col, row,board.GetUUID()) } hx-target="#rounds" hx-indicator="true">
-                    <img src={board.GetPlayers()[col][row].GetIcon()} title={getPlayerTitle(board.GetPlayers()[col][row])} width="70px" class="icon-hover"/>
+
+                <a title={getPlayerTitle(board.GetPlayers()[col][row])} itemType="link" hx-post="/boardroundsforplayer"   hx-vals={ colrowOptions(col, row,board.GetUUID()) } hx-target="#rounds" >
+                   // <img src={board.GetPlayers()[col][row].GetIcon()} title={getPlayerTitle(board.GetPlayers()[col][row])} width="70px" class="icon-hover"/>
+                   <div  class="background-div" data-bg-image={board.GetPlayers()[col][row].GetIcon()} data-bg-size="cover" data-bg-repeat="no-repeat" data-bg-position="center">
+                    //{strconv.Itoa()}
+                      <div class="badge-my">{strconv.Itoa(board.GetPlayerScore(board.GetPlayers()[col][row]))}</div>
+                        
+                        // <span style="opacity: 0.7;" class="  translate-middle badge bg-secondary">
+                        //       {strconv.Itoa(board.GetPlayerScore(board.GetPlayers()[col][row]))}
+                        //       <span class="visually-hidden">scores for player</span>
+                        // </span>
+                       // <img  src="/static/icons/win.svg" class="icon-win-loose" alt="winner" title="winner">
+                       @winnerLooserIcon(board,board.GetPlayers()[col][row] )
+                   </div>
+                  
                 </a>
              </td>
         }
@@ -57,6 +99,17 @@ templ boardTable(board *board.Board){
     }
       </tbody>
     </table>
+
+}
+
+templ winnerLooserIcon(board *board.Board, player *player.Player){
+  if board.IsLooser(player){
+    <img  src="/static/icons/lose.svg" class="icon-win-loose" alt="lost" title="lost">
+  } else if board.IsWinner(player){
+    <img  src="/static/icons/gold-medal1.svg" class="icon-win-loose" alt="won" title="winner">
+  }
+ 
+               
 }
 
 templ PlayerRounds(board *board.Board, player *player.Player,game *game.Game){

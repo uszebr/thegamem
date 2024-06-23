@@ -31,6 +31,7 @@ type Board struct {
 	rotation int
 
 	boardScores   map[*player.Player]int
+	boardScoreSum int
 	playerRatings []Rating
 }
 
@@ -161,7 +162,12 @@ func (board *Board) calculateBoardScores() {
 	for _, round := range board.rounds {
 		board.boardScores[round.Left.GetPlayer()] += round.Left.RoundScoreSum
 		board.boardScores[round.Right.GetPlayer()] += round.Right.RoundScoreSum
+		board.boardScoreSum = board.boardScoreSum + round.Left.RoundScoreSum + round.Right.RoundScoreSum
 	}
+}
+
+func (board *Board) GetBoardScoresSum() int {
+	return board.boardScoreSum
 }
 
 func (board *Board) GetBoardPlayerScores() map[*player.Player]int {
@@ -206,6 +212,26 @@ func (board *Board) GetWinners() []Rating {
 
 func (board *Board) GetLoosers() []Rating {
 	return board.playerRatings[len(board.playerRatings)-board.rotation:]
+}
+
+func (board *Board) IsLooser(player *player.Player) bool {
+	loosers := board.GetLoosers()
+	for _, l := range loosers {
+		if l.Player == player {
+			return true
+		}
+	}
+	return false
+}
+
+func (board *Board) IsWinner(player *player.Player) bool {
+	winners := board.GetWinners()
+	for _, l := range winners {
+		if l.Player == player {
+			return true
+		}
+	}
+	return false
 }
 
 func (board *Board) GetPositionForPlayer(playerToFind *player.Player) (coordinate.Position, error) {
