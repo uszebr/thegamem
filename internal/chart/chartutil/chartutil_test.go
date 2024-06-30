@@ -46,3 +46,22 @@ func TestSliceBorderToString(t *testing.T) {
 		})
 	}
 }
+
+func TestSliceStringToString(t *testing.T) {
+	tests := []struct {
+		input    []string
+		expected string
+	}{
+		{[]string{}, "[]"},
+		{[]string{"one"}, "['one']"},
+		{[]string{"one", "two", "three"}, "['one', 'two', 'three']"},
+		{[]string{"a", "b", "c"}, "['a', 'b', 'c']"},
+		{[]string{"hello", "world"}, "['hello', 'world']"},
+		{[]string{"with", "emtpy", ""}, "['with', 'emtpy', '']"},
+	}
+
+	for _, test := range tests {
+		result := SliceStringToString(test.input)
+		assert.Equal(t, test.expected, result, "should be equal")
+	}
+}

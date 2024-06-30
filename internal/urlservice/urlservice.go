@@ -22,8 +22,14 @@ func GetGameStatUrl(game *game.Game) string {
 	return fmt.Sprintf("/stat/%v", game.GetUUID())
 }
 
+// todo refactor to const part url and add to thegamem.go
 func GetModelsByBoardUrl(game *game.Game) string {
 	return fmt.Sprintf("/modelquantitybyboards/%v", game.GetUUID())
+}
+
+// todo refactor to const part url and add to thegamem.go
+func GetModelsDistributionUrl(game *game.Game) string {
+	return fmt.Sprintf("/modeldistributionlastboard/%v", game.GetUUID())
 }
 
 func GetGameUrl(game *game.Game) string {
