@@ -1,25 +1,37 @@
 package modeldistributionchart
 
 import (
+	"github.com/uszebr/thegamem/internal/chart/chartcache"
 	"github.com/uszebr/thegamem/internal/chart/chartutil"
 	"github.com/uszebr/thegamem/play/board"
 	"github.com/uszebr/thegamem/play/game"
 	"github.com/valyala/fasttemplate"
 )
 
-type ModelsDistributionChart struct{}
+type ModelsDistributionChart struct {
+	cache *chartcache.ChartCache
+}
+
+func New() *ModelsDistributionChart {
+	return &ModelsDistributionChart{cache: chartcache.NewChartCache()}
+}
 
 type seriesModelDistribution struct {
 	series []int
 	labels []string
 }
 
-func (modelsDistributionChart ModelsDistributionChart) GetChartScript(game *game.Game) string {
-	//todo create cashing sytem and return value if cashed
-	return modelsDistributionChart.createChartScript(game)
+func (modelsDistributionChart *ModelsDistributionChart) GetChartScript(game *game.Game) string {
+	script, ok := modelsDistributionChart.cache.GetCache(game.GetUUID(), game.GetBoardsQuantity())
+	if ok {
+		return script
+	}
+	calculatedScript := modelsDistributionChart.createChartScript(game)
+	modelsDistributionChart.cache.SetCache(game.GetUUID(), game.GetBoardsQuantity(), calculatedScript)
+	return calculatedScript
 }
 
-func (modelsDistributionChart ModelsDistributionChart) createChartScript(game *game.Game) string {
+func (modelsDistributionChart *ModelsDistributionChart) createChartScript(game *game.Game) string {
 	boards := game.GetBoards()
 	boardsQuantity := len(boards)
 	var md seriesModelDistribution
