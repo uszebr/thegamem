@@ -81,3 +81,23 @@ func TestChartCache_ConcurrentAccess(t *testing.T) {
 
 	wg.Wait()
 }
+
+type externalWithCache struct {
+	cache ChartCache
+}
+
+func newExternalWithCache() externalWithCache {
+	return externalWithCache{cache: *NewChartCache()}
+}
+func TestChartCache_SetCache_External_Object(t *testing.T) {
+	externalWithCache := newExternalWithCache()
+
+	gameID := "game3"
+	boardQuantity := 30
+	value := "chart3"
+
+	externalWithCache.cache.SetCache(gameID, boardQuantity, value)
+	cachedValue, found := externalWithCache.cache.GetCache(gameID, boardQuantity)
+	assert.True(t, found)
+	assert.Equal(t, value, cachedValue)
+}

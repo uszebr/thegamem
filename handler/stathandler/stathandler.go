@@ -6,6 +6,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/uszebr/thegamem/handler/utilhandler"
+	"github.com/uszebr/thegamem/internal/chart/modeldistributionchart"
 	"github.com/uszebr/thegamem/internal/chart/modelsbyboardchart"
 	"github.com/uszebr/thegamem/play/model/modelfactory"
 	"github.com/uszebr/thegamem/play/usergames"
@@ -17,10 +18,15 @@ import (
 type StatHadler struct {
 	usergames    *usergames.UserGames
 	modelFactory *modelfactory.ModelFactory
+
+	modelsByBoardChart modelsbyboardchart.ModelsByBoardChart
 }
 
 func New(usergames *usergames.UserGames, modelFactory *modelfactory.ModelFactory) StatHadler {
-	return StatHadler{usergames: usergames, modelFactory: modelFactory}
+	return StatHadler{
+		usergames:          usergames,
+		modelFactory:       modelFactory,
+		modelsByBoardChart: *modelsbyboardchart.New()}
 }
 
 func (h *StatHadler) HandleStat(c echo.Context) error {
@@ -37,7 +43,6 @@ func (h *StatHadler) HandleStat(c echo.Context) error {
 }
 
 func (h *StatHadler) ModelsByBoardChart(c echo.Context) error {
-	slog.Info("Chart SCript Post")
 	gameUrl := c.Param("gameId")
 	game, err := h.usergames.GetGameByUUID(gameUrl)
 	if err != nil {
@@ -51,5 +56,14 @@ func (h *StatHadler) ModelsByBoardChart(c echo.Context) error {
 	// 	LineData: readyString,
 	// }
 	//return utilhandler.Render(c, modelsbyboardview.ChartScript(modelsByBoardData))
-	return c.HTML(http.StatusOK, modelsbyboardchart.ModelsByBoardChart{}.GetChartScript(game))
+	return c.HTML(http.StatusOK, h.modelsByBoardChart.GetChartScript(game))
+}
+
+func (h *StatHadler) ModelDistributionLastBoardChart(c echo.Context) error {
+	gameUrl := c.Param("gameId")
+	game, err := h.usergames.GetGameByUUID(gameUrl)
+	if err != nil {
+		return utilhandler.Render(c, cardview.ShowDangerCart("No Game Found", "No game found or this game does not exist: "+gameUrl))
+	}
+	return c.HTML(http.StatusOK, modeldistributionchart.ModelsDistributionChart{}.GetChartScript(game))
 }
