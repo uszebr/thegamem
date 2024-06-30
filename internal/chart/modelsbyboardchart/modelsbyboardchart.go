@@ -1,24 +1,36 @@
 package modelsbyboardchart
 
 import (
+	"github.com/uszebr/thegamem/internal/chart/chartcache"
 	"github.com/uszebr/thegamem/internal/chart/chartutil"
 	"github.com/uszebr/thegamem/play/game"
 	"github.com/valyala/fasttemplate"
 )
 
-type ModelsByBoardChart struct{}
+type ModelsByBoardChart struct {
+	cache *chartcache.ChartCache
+}
+
+func New() *ModelsByBoardChart {
+	return &ModelsByBoardChart{cache: chartcache.NewChartCache()}
+}
 
 type seriesModelQuantity struct {
 	Name string
 	Data []int
 }
 
-func (modelsByBoard ModelsByBoardChart) GetChartScript(game *game.Game) string {
-	//todo create cashing sytem and return value if cashed
-	return modelsByBoard.createChartScript(game)
+func (modelsByBoard *ModelsByBoardChart) GetChartScript(game *game.Game) string {
+	script, ok := modelsByBoard.cache.GetCache(game.GetUUID(), game.GetBoardsQuantity())
+	if ok {
+		return script
+	}
+	calculatedScript := modelsByBoard.createChartScript(game)
+	modelsByBoard.cache.SetCache(game.GetUUID(), game.GetBoardsQuantity(), calculatedScript)
+	return calculatedScript
 }
 
-func (modelsByBoard ModelsByBoardChart) createChartScript(game *game.Game) string {
+func (modelsByBoard *ModelsByBoardChart) createChartScript(game *game.Game) string {
 	boards := game.GetBoards()
 	seriesModelQuantities := calculateSeriesModelQuanteties(game)
 	t := fasttemplate.New(scriptTeplate, "<<", ">>")

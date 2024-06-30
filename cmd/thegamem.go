@@ -69,6 +69,7 @@ func main() {
 	public.GET("/stat/:gameId", statHandler.HandleStat)
 
 	public.GET("/modelquantitybyboards/:gameId", statHandler.ModelsByBoardChart)
+	public.GET("/modeldistributionlastboard/:gameId", statHandler.ModelDistributionLastBoardChart)
 
 	log.Fatal(app.Start(":" + sv.AppPort))
 }
