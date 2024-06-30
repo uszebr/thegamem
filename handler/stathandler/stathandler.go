@@ -19,14 +19,16 @@ type StatHadler struct {
 	usergames    *usergames.UserGames
 	modelFactory *modelfactory.ModelFactory
 
-	modelsByBoardChart modelsbyboardchart.ModelsByBoardChart
+	modelsByBoardChart     modelsbyboardchart.ModelsByBoardChart
+	modelDistributionChart modeldistributionchart.ModelsDistributionChart
 }
 
 func New(usergames *usergames.UserGames, modelFactory *modelfactory.ModelFactory) StatHadler {
 	return StatHadler{
-		usergames:          usergames,
-		modelFactory:       modelFactory,
-		modelsByBoardChart: *modelsbyboardchart.New()}
+		usergames:              usergames,
+		modelFactory:           modelFactory,
+		modelsByBoardChart:     *modelsbyboardchart.New(),
+		modelDistributionChart: *modeldistributionchart.New()}
 }
 
 func (h *StatHadler) HandleStat(c echo.Context) error {
@@ -65,5 +67,5 @@ func (h *StatHadler) ModelDistributionLastBoardChart(c echo.Context) error {
 	if err != nil {
 		return utilhandler.Render(c, cardview.ShowDangerCart("No Game Found", "No game found or this game does not exist: "+gameUrl))
 	}
-	return c.HTML(http.StatusOK, modeldistributionchart.ModelsDistributionChart{}.GetChartScript(game))
+	return c.HTML(http.StatusOK, h.modelDistributionChart.GetChartScript(game))
 }
