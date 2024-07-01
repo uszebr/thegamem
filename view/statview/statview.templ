@@ -15,9 +15,11 @@ templ Show(game *game.Game) {
     <h1 class="text-center">Welcome to the Game Theory Simulation Statistics</h1>
     <div hx-get={urlservice.GetModelsByBoardUrl(game)} hx-trigger="load"></div>
     <div hx-get={urlservice.GetModelsDistributionUrl(game)} hx-trigger="load"></div>
+    <div hx-get={urlservice.GetAllScoresByBoardUrl(game)} hx-trigger="load"></div>
     <div class="row">
       <div id="chart" class="m-2 col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"></div>
       <div id="model-distribution" class="m-2 col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"></div>
+      <div id="board-scores" class="m-2 col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4"></div>
     </div>
   }
 }
