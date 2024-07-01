@@ -32,6 +32,11 @@ func GetModelsDistributionUrl(game *game.Game) string {
 	return fmt.Sprintf("/modeldistributionlastboard/%v", game.GetUUID())
 }
 
+// todo refactor to const part url and add to thegamem.go
+func GetAllScoresByBoardUrl(game *game.Game) string {
+	return fmt.Sprintf("/allscoresbyboards/%v", game.GetUUID())
+}
+
 func GetGameUrl(game *game.Game) string {
 	//todo implement when move to full urls
 	return "/game"

@@ -65,7 +65,20 @@ func Show(game *game.Game) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-trigger=\"load\"></div><div class=\"row\"><div id=\"chart\" class=\"m-2 col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4\"></div><div id=\"model-distribution\" class=\"m-2 col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4\"></div></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-trigger=\"load\"></div><div hx-get=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var5 string
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(urlservice.GetAllScoresByBoardUrl(game))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/statview/statview.templ`, Line: 18, Col: 56}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-trigger=\"load\"></div><div class=\"row\"><div id=\"chart\" class=\"m-2 col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4\"></div><div id=\"model-distribution\" class=\"m-2 col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4\"></div><div id=\"board-scores\" class=\"m-2 col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4\"></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
