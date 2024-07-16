@@ -5,6 +5,7 @@ import (
 
 	"github.com/uszebr/thegamem/play/model"
 	"github.com/uszebr/thegamem/play/model/implementation/fiveinteractions/modfivestepfinalconclusion"
+	"github.com/uszebr/thegamem/play/model/implementation/greenexploit"
 	"github.com/uszebr/thegamem/play/model/implementation/modalwaysgreen"
 	"github.com/uszebr/thegamem/play/model/implementation/modalwaysred"
 	"github.com/uszebr/thegamem/play/model/implementation/modblindrevenge"
@@ -38,6 +39,7 @@ func GetModelFactory() *ModelFactory {
 			"copystartred":            modcopystartred.ModCopyStrartRed{},
 			"random":                  modrandom.ModRandom{},
 			"fivestepfinalconclusion": modfivestepfinalconclusion.Modfivestepfinalconclusion{},
+			"greenexploit":            greenexploit.ModGreenExploit{},
 		}
 		modelNames := make([]string, 0, len(models))
 		for key := range models {
