@@ -61,7 +61,7 @@ func Base(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</body></html>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</body><footer class=\"bg-light py-3 mt-auto border-top\"><div class=\"container text-center\"><p class=\"mb-0\">&copy; 2024 Thegam. All rights reserved.</p></div></footer></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
