@@ -30,7 +30,7 @@ templ GameCreateForm(allmodels []string,errors []string){
             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-4">
                 <div class="card bg-light">
                     <div class="card-body">
-                        <h5 class="card-title">New Game</h5>
+                        <h5 class="card-title">Details</h5>
                         <div class="row">
                             <div class="col-md-5 mb-3">
                                 <label for="columnsinput">Cols 2 and more</label>
@@ -111,7 +111,7 @@ templ GameCreateForm(allmodels []string,errors []string){
 
 templ modelCheckbox(modelName string){
 <div class="form-check mb-3">
-    <input type="checkbox" class="form-check-input"  name="modelname" value={modelName}/>
+    <input type="checkbox" class="form-check-input" id={modelName} name="modelname" value={modelName}/>
     <label class="form-check-label" for={modelName}>{modelName}</label>
 </div>
 }
