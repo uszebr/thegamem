@@ -93,7 +93,7 @@ func GameCreateForm(allmodels []string, errors []string) templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"create-result\" class=\"row justify-content-center\"><div class=\"card bg-light col-xl-4 col-lg-5 col-md-6 col-sm-10\"><form class=\"card-body\" hx-post=\"/newgame\" id=\"create-game-form\" hx-target=\"#create-result\" hx-swap=\"outerHTML\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"create-result\" class=\"container\"><form hx-post=\"/newgame\" id=\"create-game-form\" hx-target=\"#create-result\" hx-swap=\"outerHTML\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -101,7 +101,7 @@ func GameCreateForm(allmodels []string, errors []string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"row\"><div class=\"col\"><label for=\"columnsinput\">Cols 2 and more</label> <input type=\"number\" class=\"form-control\" id=\"columnsinput\" name=\"columnsinput\" value=\"3\" placeholder=\"more than 2\"></div><div class=\"col\"><label for=\"rowsinput\">Rows 2 and more</label> <input type=\"number\" class=\"form-control\" id=\"rowsinput\" name=\"rowsinput\" value=\"4\" placeholder=\"more than 2\"></div></div><div class=\"row\"><div class=\"col\"><label for=\"interactions\">Interactions</label> <input type=\"number\" class=\"form-control\" id=\"interactions\" name=\"interactions\" value=\"30\"></div><div class=\"col\"><label for=\"rotation\">Players Rotation</label> <input type=\"number\" class=\"form-control\" id=\"rotation\" name=\"rotation\" value=\"2\"></div></div><div class=\"row mt-1 border-bottom\"><div class=\"col\"><div class=\"form-check\"><input class=\"form-check-input\" type=\"radio\" name=\"neighbours\" id=\"neighbours1\" value=\"neighbours\" checked> <label class=\"form-check-label\" for=\"neighbours1\">Only neighbours play on board</label></div><div class=\"form-check\"><input class=\"form-check-input\" type=\"radio\" name=\"neighbours\" id=\"neighbours2\" value=\"allplayers\"> <label class=\"form-check-label\" for=\"neighbours2\">All plyaers play on board</label></div></div><div class=\"col\"><div class=\"form-check\"><input class=\"form-check-input\" type=\"radio\" name=\"shufflePlayers\" id=\"shufflePlayers1\" value=\"yes\" checked> <label class=\"form-check-label\" for=\"shufflePlayers1\">Shuffle Players on each board</label></div><div class=\"form-check\"><input class=\"form-check-input\" type=\"radio\" name=\"shufflePlayers\" id=\"shufflePlayers2\" value=\"no\"> <label class=\"form-check-label\" for=\"shufflePlayers2\">Board to Board without shuffling</label></div></div></div><div class=\"mt-1 row\"><div class=\"col\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container\"><div class=\"row\"><!-- First Card --><div class=\"col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-4\"><div class=\"card bg-light\"><div class=\"card-body\"><h5 class=\"card-title\">New Game</h5><div class=\"row\"><div class=\"col-md-5 mb-3\"><label for=\"columnsinput\">Cols 2 and more</label> <input type=\"number\" class=\"form-control\" id=\"columnsinput\" name=\"columnsinput\" value=\"3\" placeholder=\"more than 2\"></div><div class=\"col-md-5 mb-3\"><label for=\"rowsinput\">Rows 2 and more</label> <input type=\"number\" class=\"form-control\" id=\"rowsinput\" name=\"rowsinput\" value=\"4\" placeholder=\"more than 2\"></div><div class=\"col-md-5 mb-3\"><label for=\"interactions\">Interactions</label> <input type=\"number\" class=\"form-control\" id=\"interactions\" name=\"interactions\" value=\"30\"></div><div class=\"col-md-5 mb-3\"><!-- Players rotation quantity For the next board this quantity of best players (by score) will be duplicated and substitute worst players in the bottom of the board --><label for=\"rotation\">Players Rotation</label> <input type=\"number\" class=\"form-control\" id=\"rotation\" name=\"rotation\" value=\"2\"></div><div class=\"form-check col-md-5 m-3\"><div><input class=\"form-check-input\" type=\"radio\" name=\"neighbours\" id=\"neighbours1\" value=\"neighbours\" checked> <label class=\"form-check-label\" for=\"neighbours1\">Only neighbours play on board</label></div><div><input class=\"form-check-input\" type=\"radio\" name=\"neighbours\" id=\"neighbours2\" value=\"allplayers\"> <label class=\"form-check-label\" for=\"neighbours2\">All players play on board</label></div></div><div class=\"form-check col-md-5 m-3\"><div><input class=\"form-check-input\" type=\"radio\" name=\"shufflePlayers\" id=\"shufflePlayers1\" value=\"yes\" checked> <label class=\"form-check-label\" for=\"shufflePlayers1\">Shuffle Players on each board</label></div><div><input class=\"form-check-input\" type=\"radio\" name=\"shufflePlayers\" id=\"shufflePlayers2\" value=\"no\"> <label class=\"form-check-label\" for=\"shufflePlayers2\">Board to Board without shuffling</label></div></div></div><button type=\"submit\" class=\"btn btn-primary mb-3\">Create Game</button></div></div></div><!-- Second Card --><div class=\"col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-4\"><div class=\"card bg-light\"><div class=\"card-body\"><h5 class=\"card-title\">Models List</h5><div class=\"row\"><div class=\"col-md-5 mb-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -111,7 +111,7 @@ func GameCreateForm(allmodels []string, errors []string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"col\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"col-md-5 mb-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -121,7 +121,7 @@ func GameCreateForm(allmodels []string, errors []string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div><button type=\"submit\" class=\"btn btn-primary\">Create Game</button></form></div></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div></div></div></div></div></div></form></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -154,7 +154,7 @@ func modelCheckbox(modelName string) templ.Component {
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(modelName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/newgameview/newgameview.templ`, Line: 103, Col: 86}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/newgameview/newgameview.templ`, Line: 114, Col: 86}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
@@ -167,7 +167,7 @@ func modelCheckbox(modelName string) templ.Component {
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(modelName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/newgameview/newgameview.templ`, Line: 104, Col: 50}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/newgameview/newgameview.templ`, Line: 115, Col: 50}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -180,7 +180,7 @@ func modelCheckbox(modelName string) templ.Component {
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(modelName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/newgameview/newgameview.templ`, Line: 104, Col: 62}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/newgameview/newgameview.templ`, Line: 115, Col: 62}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
@@ -213,7 +213,7 @@ func newGameFormErrors(errors []string) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		if len(errors) > 0 {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"row\" id=\"newGameErrors\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container\"><div class=\"row\" id=\"newGameErrors\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -225,7 +225,7 @@ func newGameFormErrors(errors []string) templ.Component {
 				var templ_7745c5c3_Var9 string
 				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(onEr)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/newgameview/newgameview.templ`, Line: 112, Col: 62}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/newgameview/newgameview.templ`, Line: 124, Col: 66}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 				if templ_7745c5c3_Err != nil {
@@ -236,7 +236,7 @@ func newGameFormErrors(errors []string) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
