@@ -42,8 +42,8 @@ func (h *LoginHandler) LogoutPost(c echo.Context) error {
 	slog.Debug("Logout Post")
 
 	ctx := c.Request().Context()
-	if _, ok := ctx.Value("user").(entity.UserAuth); ok {
-		return utilhandler.Render(c, cardview.ShowDangerCart("Logout Issue", "NOT logged in."))
+	if _, ok := ctx.Value("user").(entity.UserAuth); !ok {
+		return utilhandler.Render(c, cardview.ShowDangerCart("Logout Issue", "User NOT logged in."))
 	}
 
 	acookie, err := c.Cookie("atoken")

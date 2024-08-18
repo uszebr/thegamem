@@ -2,6 +2,7 @@ package usermiddleware
 
 import (
 	"context"
+	"log/slog"
 
 	"github.com/labstack/echo/v4"
 	"github.com/uszebr/thegamem/handler/utilhandler"
@@ -36,7 +37,7 @@ func (um UserMiddleware) GetUserForPublic(next echo.HandlerFunc) echo.HandlerFun
 		//return c.Redirect(http.StatusTemporaryRedirect, "/")
 		user, err := um.auth.GetSignedInUser(c)
 
-		//slog.Debug("Temp middleware: ", "user", user)
+		slog.Debug("Temp middleware: ", "user", user)
 		if err == nil {
 			ctx := context.WithValue(c.Request().Context(), "user", user)
 			c.SetRequest(c.Request().WithContext(ctx))
